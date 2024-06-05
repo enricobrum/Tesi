@@ -19,13 +19,13 @@ from time import ctime
 from datetime import datetime
 
 def richiesta(s):
-   while True:
+    while True:
         comando = input("-> ")
         if comando == "ESC":
             s.close()
             sys.exit()
         else:
-            file=open("Istanti_Temporali_SERVER_TCP.txt","a")
+            file=open("Istanti_Temporali_CLIENT_TCP.txt","a")
             file.write("\nInviato: \n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time)
