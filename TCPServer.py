@@ -20,8 +20,8 @@ from datetime import datetime
 
 def ricevi_comandi(conn):
         richiesta = conn.recv(4096)
-        dato=richiesta.decode()+','+datetime.now().time().microsecond
-        risposta=dato+','+datetime.now().time().microsecond
+        dato=richiesta.decode()+','+str(datetime.now().time().microsecond)
+        risposta=dato+','+str(datetime.now().time().microsecond)
         conn.send(risposta.encode())
         
         
