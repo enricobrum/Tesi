@@ -18,7 +18,8 @@ import subprocess
 from time import ctime
 from datetime import datetime
 
-def ricevi_comandi(conn):
+def ricevi(conn):
+    while True:
         richiesta = conn.recv(4096)
         dato=richiesta.decode()+','+str(datetime.now().time().microsecond)
         risposta=dato+','+str(datetime.now().time().microsecond)
@@ -37,7 +38,7 @@ def sub_server(indirizzo,backlog=1):
         sub_server(indirizzo,backlog=1)
     conn,indirizzo_client=s.accept()
     print(f"connessione server - client stabilita:{indirizzo_client}")
-    ricevi_comandi(conn)
+    ricevi(conn)
 
 if __name__=='__main__':
     sub_server(("127.0.0.1",20000))
