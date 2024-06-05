@@ -21,7 +21,6 @@ from datetime import datetime
 def ricevi(conn):
     file=open("Istanti_Temporali_SERVER_TCP.txt","a")
     while True:
-        data=conn.recv(4096)
         file.write("\nRicevuto: \n")
         richiesta = conn.recv(4096)
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
