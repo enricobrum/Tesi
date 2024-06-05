@@ -23,7 +23,7 @@ def ricevi(conn):
         data=conn.recv(4096)
         if data:
             file=open("Istanti_Temporali_SERVER_TCP.txt","a")
-            file.write("Ricevuto: \n")
+            file.write("\nRicevuto: \n")
             richiesta = conn.recv(4096)
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time+"\n")
