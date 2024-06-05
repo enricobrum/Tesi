@@ -40,3 +40,6 @@ def conn_sub_server(indirizzo_server):
         print(f"qualcosa è andato storto, sto uscendo...\n {errore}")
         sys.exit()
     richiesta(s)
+    
+if __name__=="__main__":
+    conn_sub_server(("127.0.0.1",20000))
