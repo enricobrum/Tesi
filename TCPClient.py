@@ -15,18 +15,17 @@
 # s.connect()    => Inizia la connessione col Server. Richiede un Tuple contenente IP e Porta del Servizio
 import socket 
 import sys 
+from time import ctime
+from datetime import datetime
 
-def invia_comandi(s):
-    while True:
-        comando=input("-> ")
-        if comando=="ESC":
-            print("sto chiudendo la connessione")
-            s.close()
-            sys.exit()
-        else:
-            s.send(comando.encode())
-            data=s.recv(4096) #4096 byte dimensione del buffer
-            print(str(data,"utf-8"))
+def test(s):
+        print(datetime.now().time().microsecond)
+        data="test"
+        s.send(data.encode())
+        data=s.recv(4096) #4096 byte dimensione del buffer
+        print(datetime.now().time().microsecond)
+        print(str(data,"utf-8"))
+        s.close()
             
 def conn_sub_server(indirizzo_server):
     try:
@@ -36,7 +35,7 @@ def conn_sub_server(indirizzo_server):
     except socket.error as errore:
         print(f"qualcosa è andato storto, sto uscendo...\n {errore}")
         sys.exit()
-    invia_comandi(s)
+    test(s)
     
 if __name__=="__main__": #se stiamo lanciando questo script come programma
         conn_sub_server(("127.0.0.1",20000))

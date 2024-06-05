@@ -15,12 +15,16 @@
 # 5 - Invio Risposta al Client       
 import socket
 import subprocess
+from time import ctime
+from datetime import datetime
 
 def ricevi_comandi(conn):
-    while True:
         richiesta = conn.recv(4096)
+        print(datetime.now().time().microsecond)
         risposta = richiesta
+        print(datetime.now().time().microsecond)
         conn.send(risposta)
+        
         
 def sub_server(indirizzo,backlog=1):
     try:
