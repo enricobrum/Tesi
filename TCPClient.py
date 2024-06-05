@@ -24,7 +24,7 @@ def richiesta(s):
         if comando == "ESC":
             s.close()
             sys.exit()
-        else:
+        if comando == "test":
             file=open("Istanti_Temporali_CLIENT_TCP.txt","a")
             file.write("\nInviato: \n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
