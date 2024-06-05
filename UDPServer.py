@@ -26,12 +26,12 @@ def echo_server(port):
         file=open("Istanti_Temporali_SERVER_UDP.txt","a")
         data, address = sock.recvfrom(data_payload) 
         file.write("Ricevuto: \n")
-        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
         file.write(time)
         file.write("\n")
         if data: 
             sent = sock.sendto(data, address) 
-            time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
+            time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
             file.write("Inoltrato: \n")
             file.write(time)
             file.write("\n")

@@ -28,7 +28,7 @@ def echo_client(port):
 
         # Send data
         message = "Test message. This will be echoed"
-        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
         file.write("Invio: \n")
         file.write(time)
         file.write("\n")
@@ -36,7 +36,7 @@ def echo_client(port):
 
         # Receive response
         data, server = sock.recvfrom(data_payload)
-        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
         file.write("Ricezione: \n")
         file.write(time)
         file.write("\n")
