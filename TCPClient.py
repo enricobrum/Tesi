@@ -19,11 +19,17 @@ from time import ctime
 from datetime import datetime
 
 def richiesta(s):
-        data=datetime.now().time().microsecond #assegna come dato da mandare il timestamp in microsecondi di invio
-        s.send(str(data).encode("utf-8"))
+        file=open("Istanti_Temporali_SERVER_TCP.txt","a")
+        file.write("\nInviato: \n")
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
+        file.write(time)
+        s.send("Test".encode("utf-8"))
         data=s.recv(4096) #4096 byte dimensione del buffer
-        print(data.decode()+','+str(datetime.now().time().microsecond))
-
+        if data:
+            file.write("\nRicevuto:\n")
+            time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
+            file.write(time)
+        file.close()        
             
 def conn_sub_server(indirizzo_server):
     try:
