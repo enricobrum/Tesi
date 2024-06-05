@@ -20,10 +20,9 @@ from datetime import datetime
 
 def ricevi_comandi(conn):
         richiesta = conn.recv(4096)
-        print(datetime.now().time().microsecond)
-        risposta = richiesta
-        print(datetime.now().time().microsecond)
-        conn.send(risposta)
+        dato=richiesta.decode()+','+datetime.now().time().microsecond
+        risposta=dato+','+datetime.now().time().microsecond
+        conn.send(risposta.encode())
         
         
 def sub_server(indirizzo,backlog=1):
@@ -39,6 +38,3 @@ def sub_server(indirizzo,backlog=1):
     conn,indirizzo_client=s.accept()
     print(f"connessione server - client stabilita:{indirizzo_client}")
     ricevi_comandi(conn)
-    
-if __name__ == '__main__':
-    sub_server(("127.0.0.1",20000))

@@ -18,13 +18,11 @@ import sys
 from time import ctime
 from datetime import datetime
 
-def test(s):
-        print(datetime.now().time().microsecond)
-        data="test"
+def richiesta(s):
+        data=datetime.now().time().microsecond #assegna come dato da mandare il timestamp in microsecondi di invio
         s.send(data.encode())
         data=s.recv(4096) #4096 byte dimensione del buffer
-        print(datetime.now().time().microsecond)
-        print(str(data,"utf-8"))
+        print(data.decode()+','+datetime.now().time().microsecond)
         s.close()
             
 def conn_sub_server(indirizzo_server):
@@ -35,7 +33,4 @@ def conn_sub_server(indirizzo_server):
     except socket.error as errore:
         print(f"qualcosa è andato storto, sto uscendo...\n {errore}")
         sys.exit()
-    test(s)
-    
-if __name__=="__main__": #se stiamo lanciando questo script come programma
-        conn_sub_server(("127.0.0.1",20000))
+    richiesta(s)
