@@ -23,22 +23,17 @@ def echo_server(port):
     sock.bind(server_address) 
  
     while True: 
-        file=open("Istanti_Temporali_SERVER.txt","a")
-        print ("Waiting to receive message from client") 
+        file=open("Istanti_Temporali_SERVER_UDP.txt","a")
         data, address = sock.recvfrom(data_payload) 
-        
-        print(datetime.now().time())
         file.write("Ricevuto: \n")
-        file.write(str(datetime.now().time()))
+        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
+        file.write(time)
         file.write("\n")
-        print ("received %s bytes from %s" % (len(data), address)) 
-        print ("Data: %s" %data) 
-     
         if data: 
             sent = sock.sendto(data, address) 
-            print(datetime.now().time())
+            time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
             file.write("Inoltrato: \n")
-            file.write(str(datetime.now().time()))
+            file.write(time)
             file.write("\n")
             print ("sent %s bytes back to %s" % (sent, address)) 
         file.close()

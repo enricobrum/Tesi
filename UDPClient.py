@@ -17,7 +17,7 @@ data_payload = 2048
 def echo_client(port):
     """ A simple echo client """
     # Create a UDP socket
-    file=open("Istanti_Temporali_CLIENT.txt","a")
+    file=open("Istanti_Temporali_CLIENT_UDP.txt","a")
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     server_address = (host, port)
@@ -28,18 +28,17 @@ def echo_client(port):
 
         # Send data
         message = "Test message. This will be echoed"
-        print ("Sending %s" % message)
-        print(datetime.now().time())
+        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
         file.write("Invio: \n")
-        file.write(str(datetime.now().time()))
+        file.write(time)
         file.write("\n")
         sent = sock.sendto(message.encode('utf-8'), server_address)
 
         # Receive response
         data, server = sock.recvfrom(data_payload)
-        print(datetime.now().time())
+        time=str(datetime.now().time().second)+'s'+str(datetime.now().time().microsecond+'us')
         file.write("Ricezione: \n")
-        file.write(str(datetime.now().time()))
+        file.write(time)
         file.write("\n")
         print ("received %s" % data)
 
