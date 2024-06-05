@@ -11,7 +11,7 @@ try:
     Refer for Default Ports: https://geekflare.com/default-port-numbers/
     & http://www.steves-internet-guide.com/tcpip-ports-sockets/
     """
-    port = 80 # Port to listen on (non-privileged ports are > 1023)
+    port = 8080 # Port to listen on (non-privileged ports are > 1023)
 
     # List of Servers/Hosts
     hosts_to_test = [
