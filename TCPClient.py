@@ -19,23 +19,23 @@ from time import ctime
 from datetime import datetime
 
 def richiesta(s):
+    file=open("Istanti_Temporali_CLIENT_TCP.txt","a")
     while True:
         comando = input("-> ")
         if comando == "ESC":
             s.close()
             sys.exit()
-        else:
-            file=open("Istanti_Temporali_CLIENT_TCP.txt","a")
+        else: 
             file.write("\nInviato: \n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time)
-            s.send(comando.encode())
+            s.send(comando)
             data=s.recv(4096) #4096 byte dimensione del buffer
             file.write("\nRicevuto:\n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time)
             print("Ricevuto")
-            file.close()
+    file.close()
           
             
 def conn_sub_server(indirizzo_server):

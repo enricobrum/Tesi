@@ -19,9 +19,9 @@ from time import ctime
 from datetime import datetime
 
 def ricevi(conn):
+    file=open("Istanti_Temporali_SERVER_TCP.txt","a")
     while True:
         data=conn.recv(4096)
-        file=open("Istanti_Temporali_SERVER_TCP.txt","a")
         file.write("\nRicevuto: \n")
         richiesta = conn.recv(4096)
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
@@ -31,8 +31,8 @@ def ricevi(conn):
         file.write("Inviato:\n")
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
         file.write(time+"\n")
-        conn.send(risposta.encode())
-        file.close()
+        conn.send(risposta)
+    file.close()
         
         
 def sub_server(indirizzo,backlog=1):
