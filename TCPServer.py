@@ -31,7 +31,7 @@ def ricevi(conn):
         file.write("Inviato:\n")
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
         file.write(time+"\n")
-        conn.send(risposta)
+        conn.send(risposta.encode("uft-8"))
     file.close()
         
         
