@@ -29,7 +29,7 @@ def richiesta(s):
             file.write("\nInviato: \n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time)
-            s.send("Test".encode("utf-8"))
+            s.send(comando.encode("utf-8"))
             data=s.recv(4096) #4096 byte dimensione del buffer
             file.write("\nRicevuto:\n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
