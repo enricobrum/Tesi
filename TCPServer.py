@@ -38,3 +38,6 @@ def sub_server(indirizzo,backlog=1):
     conn,indirizzo_client=s.accept()
     print(f"connessione server - client stabilita:{indirizzo_client}")
     ricevi_comandi(conn)
+
+if __name__=='__main__':
+    sub_server(("127.0.0.1",20000))

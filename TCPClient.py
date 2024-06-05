@@ -20,7 +20,7 @@ from datetime import datetime
 
 def richiesta(s):
         data=datetime.now().time().microsecond #assegna come dato da mandare il timestamp in microsecondi di invio
-        s.send(data.encode())
+        s.send(str(data,"utf-8").encode())
         data=s.recv(4096) #4096 byte dimensione del buffer
         print(data.decode()+','+datetime.now().time().microsecond)
         s.close()
