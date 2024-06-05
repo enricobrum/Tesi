@@ -21,18 +21,17 @@ from datetime import datetime
 def ricevi(conn):
     while True:
         data=conn.recv(4096)
-        if data:
-            file=open("Istanti_Temporali_SERVER_TCP.txt","a")
-            file.write("\nRicevuto: \n")
-            richiesta = conn.recv(4096)
-            time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
-            file.write(time+"\n")
-            risposta="Ricevuto"
-            file.write("Inviato:\n")
-            time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
-            file.write(time+"\n")
-            conn.send(risposta.encode())
-            file.close()
+        file=open("Istanti_Temporali_SERVER_TCP.txt","a")
+        file.write("\nRicevuto: \n")
+        richiesta = conn.recv(4096)
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
+        file.write(time+"\n")
+        risposta="Ricevuto"
+        file.write("Inviato:\n")
+        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
+        file.write(time+"\n")
+        conn.send(risposta.encode())
+        file.close()
         
         
 def sub_server(indirizzo,backlog=1):
