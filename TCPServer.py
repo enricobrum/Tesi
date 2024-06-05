@@ -50,4 +50,4 @@ def sub_server(indirizzo,backlog=1):
     ricevi(conn)
 
 if __name__=='__main__':
-    sub_server(("127.0.0.1",20000))
+    sub_server(("",20000))

@@ -49,4 +49,4 @@ def conn_sub_server(indirizzo_server):
     richiesta(s)
     
 if __name__=="__main__":
-    conn_sub_server(("127.0.0.1",20000))
+    conn_sub_server(("172.24.204.146",20000))
