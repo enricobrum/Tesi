@@ -27,10 +27,11 @@ def ricevi(conn):
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
         file.write(time+"\n")
         risposta="Ricevuto"
+        print(risposta)
         file.write("Inviato:\n")
         time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
         file.write(time+"\n")
-        conn.send(risposta.encode())
+        conn.send(risposta.encode("utf-8"))
         file.close()
         
         

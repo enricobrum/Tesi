@@ -34,6 +34,7 @@ def richiesta(s):
             file.write("\nRicevuto:\n")
             time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
             file.write(time)
+            print("Ricevuto")
             file.close()
           
             
