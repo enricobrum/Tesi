@@ -19,17 +19,23 @@ from time import ctime
 from datetime import datetime
 
 def ricevi(conn):
-    file=open("Istanti_Temporali_SERVER_TCP.txt","a")
+    file=open("Istanti_Temporali_SERVER_TCP.csv","a")
+    file.write("Ricevuto;")
+    file.write("Inviato;\n")
     while True:
-        file.write("\nRicevuto: \n")
         richiesta = conn.recv(4096)
-        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
-        file.write(time+"\n")
+        now=datetime.now().time()
+        secondi=now.second
+        micros=now.microsecond 
+        file.write(str(secondi)+'.'+str(micros)+";")
         risposta="Ricevuto"
         print(risposta)
-        file.write("Inviato:\n")
-        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"   
-        file.write(time+"\n")
+
+        now=datetime.now().time()
+        secondi=now.second
+        micros=now.microsecond 
+        file.write(str(secondi)+'.'+str(micros)+";")
+        file.write("\n")
         conn.send(risposta.encode())
     file.close()
         
