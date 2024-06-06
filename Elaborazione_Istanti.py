@@ -1,17 +1,19 @@
-import time
-from time import ctime
-from datetime import datetime
+#File di elaborazione degli istanti temporali contenuti all'interno dei relativi file .csv.
+#Se lanciato su i file relativi al Client il risultato rappresenterà il Round Trip Time essendo la differenza tra l'istante di invio e l'istante
+#di ricezione del messaggio di risposta del server. Se lanciato su i file relativi al Server permetterà di capire il tempo impiegato da esso a 
+#rispondere.
+import csv
 
-def Elaborazione(testo):
-    file=open(testo,"r")
-    tmp1=file.readlines()
-    file.close()
-    for i in tmp1.__len__:
-        tmp1.remove("Inviato: \n")
-        tmp1.remove("Ricevuto:\n")
-        print(tmp1)
-    
-    
-if __name__=="__main__":
-    Elaborazione("Istanti_Temporali_CLIENT_TCP.txt")
-    
+def Elaborazione(file):
+    with open(file, newline="\n") as filecsv:
+        lettore = csv.reader(filecsv,delimiter=";")
+        line_count=0
+        for row in lettore:
+            if line_count == 0:
+                line_count += 1
+            else:
+                invio=float(row[0])
+                ricezione=float(row[1])
+                RTT=ricezione-invio
+                print(RTT)
+                line_count += 1
