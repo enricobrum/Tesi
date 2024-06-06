@@ -3,6 +3,7 @@
 #di ricezione del messaggio di risposta del server. Se lanciato su i file relativi al Server permetterà di capire il tempo impiegato da esso a 
 #rispondere.
 import csv
+import sys
 
 def Elaborazione(file):
     with open(file, newline="\n") as filecsv:
@@ -18,3 +19,6 @@ def Elaborazione(file):
                 RTT=ricezione-invio
                 print(RTT)
                 line_count += 1
+
+if __name__=="__main__":
+    Elaborazione(sys.args[0])
