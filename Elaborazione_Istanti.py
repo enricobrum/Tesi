@@ -9,8 +9,8 @@ def Elaborazione(file):
     with open(file, newline="\n") as filecsv:
         lettore = csv.reader(filecsv,delimiter=";")
         line_count=0
-        print("test")
         for row in lettore:
+            print(row)
             if line_count == 0:
                 line_count += 1
             else:
