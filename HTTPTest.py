@@ -21,8 +21,9 @@ for hostname in hosts_to_test.keys():
     response = requests.get(hostname+":"+str(port))
     now=datetime.now().time()
     time=str(now.second)+"s"+str(now.microsecond)+"us"
-    file.write("Risposta:\n")
+    file.write("\nRisposta:\n")
     file.write(time)
+    file.write("\n")
     print("risposta:",response.url)
 file.close()
         
