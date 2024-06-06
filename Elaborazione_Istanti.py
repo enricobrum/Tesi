@@ -15,5 +15,5 @@ def Elaborazione(file):
                 invio=float(row[0])
                 ricezione=float(row[1])
                 RTT=ricezione-invio
-                print(RTT)
                 line_count += 1
+                return RTT
