@@ -20,8 +20,8 @@ from datetime import datetime
 
 def richiesta(s):
     file=open("Istanti_Temporali_CLIENT_TCP.csv","a")
-    file.write("Inviato;")
-    file.write("Ricevuto;\n")
+    file.write("InviatoCLIENT;")
+    file.write("RicevutoCLIENT;\n")
     while True:
         comando = input("-> ")
         if comando == "ESC":

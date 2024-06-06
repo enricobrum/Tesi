@@ -11,18 +11,20 @@ hosts_to_test = {
 }
 
     # Iterate the Serevrs/Hosts list
-file=open("Istanti_Temporali_HTTP.txt","a")
+file=open("Istanti_Temporali_HTTP.csv","a")
+file.write("Invio;")
+file.write("Risposta;\n")
 for hostname in hosts_to_test.keys():
     port = hosts_to_test[hostname]
-    file.write("Invio richiesta:\n")
     now=datetime.now().time()
-    time=str(now.second)+"s"+str(now.microsecond)+"us"
-    file.write(time)
+    secondi=now.second
+    micros=now.microsecond 
+    file.write(str(secondi)+'.'+str(micros)+";")
     response = requests.get(hostname+":"+str(port))
     now=datetime.now().time()
-    time=str(now.second)+"s"+str(now.microsecond)+"us"
-    file.write("\nRisposta:\n")
-    file.write(time)
+    secondi=now.second
+    micros=now.microsecond 
+    file.write(str(secondi)+'.'+str(micros)+";")
     file.write("\n")
     print("risposta:",response.url)
 file.close()

@@ -9,9 +9,7 @@ from datetime import datetime
 host = 'localhost' 
 data_payload = 2048 
 
-def echo_server(port):
-    
-    
+def echo_server(port):    
     """ A simple echo server """ 
     # Create a UDP socket 
     sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) 
@@ -19,24 +17,29 @@ def echo_server(port):
     # Bind the socket to the port 
     server_address = (host, port) 
     print("Starting up echo server on %s port %s" % server_address) 
- 
+    
     sock.bind(server_address) 
- 
-    while True: 
-        file=open("Istanti_Temporali_SERVER_UDP.txt","a")
+    file=open("Istanti_Temporali_SERVER_UDP.csv","a")
+    file.write("RicevutoSERVER;")
+    file.write("InviatoSERVER;\n")    
+    while True:
         data, address = sock.recvfrom(data_payload) 
-        file.write("Ricevuto: \n")
-        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
-        file.write(time)
-        file.write("\n")
+        now=datetime.now().time()
+        secondi=now.second
+        micros=now.microsecond 
+        file.write(str(secondi)+'.'+str(micros)+";")
         if data: 
             sent = sock.sendto(data, address) 
-            time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
-            file.write("Inoltrato: \n")
-            file.write(time)
+            now=datetime.now().time()
+            secondi=now.second
+            micros=now.microsecond 
+            file.write(str(secondi)+'.'+str(micros)+";")
             file.write("\n")
-            print ("sent %s bytes back to %s" % (sent, address)) 
-        file.close()
+            print ("sent %s bytes back to %s" % (sent, address))
+        if data.decode() == 'ESC': break
+    file.close()
+    sock.close()
+
  
 if __name__ == '__main__': 
     echo_server(9900) 

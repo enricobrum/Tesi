@@ -20,8 +20,8 @@ from datetime import datetime
 
 def ricevi(conn):
     file=open("Istanti_Temporali_SERVER_TCP.csv","a")
-    file.write("Ricevuto;")
-    file.write("Inviato;\n")
+    file.write("RicevutoSERVER;")
+    file.write("InviatoSERVER;\n")
     while True:
         richiesta = conn.recv(4096)
         now=datetime.now().time()

@@ -17,35 +17,37 @@ data_payload = 2048
 def echo_client(port):
     """ A simple echo client """
     # Create a UDP socket
-    file=open("Istanti_Temporali_CLIENT_UDP.txt","a")
+    file=open("Istanti_Temporali_CLIENT_UDP.csv","a")
+    file.write("InviatoCLIENT;")
+    file.write("RicevutoCLIENT;\n")
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     server_address = (host, port)
     print ("Connecting to %s port %s" % server_address)
     message = 'This is the message.  It will be repeated.'
-
-    try:
-
+    for i in range(10):
         # Send data
         message = "Test message. This will be echoed"
-        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
-        file.write("Invio: \n")
-        file.write(time)
-        file.write("\n")
+        now=datetime.now().time()
+        secondi=now.second
+        micros=now.microsecond 
+        file.write(str(secondi)+'.'+str(micros)+";")
         sent = sock.sendto(message.encode('utf-8'), server_address)
-
-        # Receive response
+            # Receive response
         data, server = sock.recvfrom(data_payload)
-        time=str(datetime.now().time().second)+"s"+str(datetime.now().time().microsecond)+"us"
-        file.write("Ricezione: \n")
-        file.write(time)
+        now=datetime.now().time()
+        secondi=now.second
+        micros=now.microsecond 
+        file.write(str(secondi)+'.'+str(micros)+";")
         file.write("\n")
         print ("received %s" % data)
+    esc="ESC"
+    sock.sendto(esc.encode(),server_address)
 
-    finally:
-        print ("Closing connection to the server")
-        sock.close()
-        file.close()
+    print ("Closing connection to the server")
+    sock.close()
+    file.close()
+
 
 if __name__ == '__main__':
     echo_client(9900)
