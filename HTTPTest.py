@@ -3,8 +3,6 @@ import time
 from time import ctime
 from datetime import datetime
 
-port = 80 # Port to listen on (non-privileged ports are > 1023)
-
     # dizionario: 
 hosts_to_test = {
     'http://google.com' : 80,
@@ -13,11 +11,19 @@ hosts_to_test = {
 }
 
     # Iterate the Serevrs/Hosts list
+file=open("Istanti_Temporali_HTTP.txt","a")
 for hostname in hosts_to_test.keys():
     port = hosts_to_test[hostname]
-    print(datetime.now().time().microsecond)
+    file.write("Invio richiesta:\n")
+    now=datetime.now().time()
+    time=str(now.second)+"s"+str(now.microsecond)+"us"
+    file.write(time)
     response = requests.get(hostname+":"+str(port))
-    print(datetime.now().time().microsecond)
+    now=datetime.now().time()
+    time=str(now.second)+"s"+str(now.microsecond)+"us"
+    file.write("Risposta:\n")
+    file.write(time)
     print("risposta:",response.url)
+file.close()
         
 
