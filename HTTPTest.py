@@ -6,7 +6,7 @@ from datetime import datetime
     # dizionario: 
 hosts_to_test = {
     'http://google.com' : 80,
-    'http://127.0.0.1' : 8080,
+    'http://10.22.255.152' : 8080,
     'http://unibs.it' : 80
 }
 
