@@ -16,11 +16,13 @@ def echo_server(port):
     print("Server in funzione.\n")
     while True:
         data,addr=sock.recvfrom(data_payload) #Il server si mette in ascolto con un buffer di dimensione indicata dalla variabile
-        if data:    
+        if data:
+            print("Messaggio ricevuto:\n")    
             print(data.decode())
             sent=sock.sendto(data,addr) #Rimanda indietro il messaggio arrivato
-            print("Messaggio rispedito.\n")
+            print("\nMessaggio rispedito.\n")
     sock.close() #Chiusura del socket
 #______________________________________________________________________________________________________________
-
+if __name__=='__main__':
+    echo_server(9900)
 
