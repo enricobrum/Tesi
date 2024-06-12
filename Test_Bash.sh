@@ -8,5 +8,5 @@ for param1 in "${dim_payload[@]}"
   do
     # Esegui lo script Python con i parametri correnti
     xterm -hold -e python3 Server_TCP.py
-    xterm -hold -e python3 Client_TCP.py --payload_size '$dim_payload'
+    xterm -hold -e python3 Client_TCP.py --payload_size "$dim_payload"
 done
