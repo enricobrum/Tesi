@@ -8,5 +8,4 @@ for param1 in "${param1_values[@]}"
   do
     # Esegui lo script Python con i parametri correnti
     python3 Client_TCP.py --payload_size "$param1" 
-  done
 done
