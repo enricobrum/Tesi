@@ -11,7 +11,7 @@ def tcp_client(server_host, server_port, payload_size):
             client_socket.sendall(payload)
             print(f"Sent {payload_size} bytes")
 
-            data = client_socket.recv(4096)
+            data = client_socket.recv(65536)
             print(f"Received {len(data)} bytes")
     except Exception as e:
         print(f"An error occurred: {e}")
