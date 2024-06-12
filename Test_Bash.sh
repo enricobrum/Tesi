@@ -9,5 +9,5 @@ sleep 3
 for param1 in "${dim_payload[@]}"
   do
     # Esegui lo script Python con i parametri correnti
-  python3 Client_TCP.py --payload_size "$param1" &
+    python3 Client_TCP.py --payload_size "$param1" 
 done
