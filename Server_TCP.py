@@ -12,7 +12,7 @@ def start_tcp_server(host, port):
             with conn:
                 print(f"Connected by {addr}")
                 while True:
-                    data = conn.recv(4096)
+                    data = conn.recv(65536)
                     if not data:
                         break
                     print(f"Received {len(data)} bytes from {addr}")
