@@ -5,7 +5,7 @@ get_config_value() {
     section=$1
     key=$2
     config_file=$3
-    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$CONFIG_FILE" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
+    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" $CONFIG_FILE | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
     echo $value
 }
 
@@ -13,18 +13,18 @@ get_config_value() {
 CONFIG_FILE="config1.ini"
 
 # Parametri nodo centrale
-CENTRAL_IP=$(get_config_value "nodo_centrale" "ip" "$CONFIG_FILE")
-DURATION=$(get_config_value "nodo_centrale" "duration" "$CONFIG_FILE")
-INTERFACE=$(get_config_value "nodo_centrale" "interface" "$CONFIG_FILE")
-TSHARK_OUTPUT_FILE=$(get_config_value "nodo_centrale" "tshark_output_file" "$CONFIG_FILE")
+CENTRAL_IP=$(get_config_value nodo_centrale ip $CONFIG_FILE)
+DURATION=$(get_config_value nodo_centrale duration $CONFIG_FILE)
+INTERFACE=$(get_config_value nodo_centrale interface $CONFIG_FILE)
+TSHARK_OUTPUT_FILE=$(get_config_value nodo_centrale tshark_output_file $CONFIG_FILE)
 
 # Parametri server
-SERVER1_IP=$(get_config_value "server1" "ip" "$CONFIG_FILE")
-SERVER1_PORT=$(get_config_value "server1" "port" "$CONFIG_FILE")
-SERVER1_IPERF_OUTPUT_FILE=$(get_config_value "server1" "iperf_output_file" "$CONFIG_FILE")
-SERVER2_IP=$(get_config_value "server2" "ip" "$CONFIG_FILE")
-SERVER2_PORT=$(get_config_value "server2" "port" "$CONFIG_FILE")
-SERVER2_IPERF_OUTPUT_FILE=$(get_config_value "server2" "iperf_output_file" "$CONFIG_FILE")
+SERVER1_IP=$(get_config_value server1 ip $CONFIG_FILE)
+SERVER1_PORT=$(get_config_value server1 port $CONFIG_FILE)
+SERVER1_IPERF_OUTPUT_FILE=$(get_config_value server1 iperf_output_file $CONFIG_FILE)
+SERVER2_IP=$(get_config_value server2 ip $CONFIG_FILE)
+SERVER2_PORT=$(get_config_value server2 port $CONFIG_FILE)
+SERVER2_IPERF_OUTPUT_FILE=$(get_config_value server2 iperf_output_file $CONFIG_FILE)
 
 # Funzione per verificare se un comando è installato
 command_exists() {
