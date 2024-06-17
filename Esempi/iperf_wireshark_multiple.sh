@@ -10,7 +10,7 @@ get_config_value() {
 }
 
 # Leggi i valori di configurazione dal file config.ini
-CONFIG_FILE="config.ini"
+CONFIG_FILE="config1.ini"
 
 # Parametri nodo centrale
 CENTRAL_IP=$(get_config_value "nodo_centrale" "ip" "$CONFIG_FILE")
