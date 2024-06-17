@@ -68,7 +68,7 @@ sleep 5
 
 # Cattura i pacchetti con tshark
 echo "Avvio cattura dei pacchetti sull'interfaccia $INTERFACE per $DURATION secondi..."
-tshark -i $INTERFACE -a duration:$DURATION -w $TSHARK_OUTPUT_FILE &
+tshark -i $INTERFACE -a $DURATION -w $TSHARK_OUTPUT_FILE &
 TSHARK_PID=$!
 
 # Avvia il client iperf verso il nodo centrale
