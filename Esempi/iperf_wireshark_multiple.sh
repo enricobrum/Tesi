@@ -5,7 +5,7 @@ get_config_value() {
     section=$1
     key=$2
     config_file=$3
-    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
+    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$CONFIG_FILE" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
     echo $value
 }
 
