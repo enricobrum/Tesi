@@ -1,13 +1,15 @@
 #!/bin/bash
 #Funzione per leggere da file di configurazione
-get_config_value(){
+get_config_value() {
     local section="$1"
     local key="$2"
     local config_file="$3"
     local value
-    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
+
+    value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2- | tr -d ' ')
     echo "$value"
 }
+
 
 #Leggo i valori dei file di configurazione:
 CONFIG_FILE="config.ini"
