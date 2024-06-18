@@ -7,7 +7,9 @@ get_config_value(){
     value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
     echo $value
 }
+
 #Leggo i valori dei file di configurazione:
+CONFIG_FILE="config.ini"
 # Parametri nodo centrale
 echo CENTRAL_IP=$(get_config_value "nodo_centrale" "ip" "$CONFIG_FILE")
 echo DURATION=$(get_config_value "nodo_centrale" "duration" "$CONFIG_FILE")
