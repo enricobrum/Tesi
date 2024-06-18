@@ -5,8 +5,7 @@ get_config_value() {
     local key="$2"
     local config_file="$3"
     local value
-
-    value=$(awk -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2- | tr -d ' ')
+    valure=$(awk '/^\[/ { app=substr($0,2,length-2) } /=/ { print app "." $0 }' file.conf)
     echo "$value"
 }
 
