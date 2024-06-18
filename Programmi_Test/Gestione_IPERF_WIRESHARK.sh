@@ -5,7 +5,7 @@ get_config_value(){
     key=$2
     config_file=$3
     value=$(sed -n "/^\[$section\]/,/^\[/{/^[^#].*=/p;}" "$config_file" | grep "^$key=" | cut -d '=' -f2 | tr -d ' ')
-    echo $value
+    return $value
 }
 
 #Leggo i valori dei file di configurazione:
