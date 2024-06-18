@@ -20,7 +20,7 @@ function _ini_get_key_value {
 function ini_printdb {
     for i in "${!inidb[@]}"
     do
-     split the associative key in to section and key
+    # split the associative key in to section and key
        echo -n "section  : $(echo $i | cut -f1 -d ' ');"
        echo -n "key  : $(echo $i | cut -f2 -d ' ');"
        echo  "value: ${inidb[$i]}"
@@ -38,7 +38,7 @@ function ini_loadfile {
     IFS=
     while read -r line; do
         new_section=$(_ini_get_section $line)
-         got a new section
+     #    got a new section
         if [[ -n "$new_section" ]]; then
             cur_section=$new_section
         # not a section, try a key value
