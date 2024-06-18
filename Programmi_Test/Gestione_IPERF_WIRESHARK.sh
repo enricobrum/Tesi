@@ -37,7 +37,7 @@ function ini_loadfile {
     fi
     done <$1
 }
-ini_loadfile test.ini
+ini_loadfile config.ini
 ini_printdb
 
 
