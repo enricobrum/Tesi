@@ -1,5 +1,22 @@
 #!/bin/bash
 #Funzione per leggere da file di configurazione
+declare -A inidb
+function _ini_get_section {
+    if [[ "$1" =~ ^(\[)(.*)(\])$ ]]; 
+    then 
+        echo ${BASH_REMATCH[2]} ; 
+    else 
+        echo ""; 
+    fi
+}
+function _ini_get_key_value {
+    if [[ "$1" =~ ^([^=]+)=([^=]+)$ ]]; 
+    then 
+        echo "${BASH_REMATCH[1]}=${BASH_REMATCH[2]}"; 
+    else 
+        echo ""
+    fi
+}
 function ini_printdb {
     for i in "${!inidb[@]}"
     do
