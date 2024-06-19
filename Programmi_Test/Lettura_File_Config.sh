@@ -1,6 +1,6 @@
 #!/bin/bash
 #Funzione per leggere da file di configurazione
-declare -A inidb
+declare -A inidb                        #creazione array in Bash
 function _ini_get_section {
     if [[ "$1" =~ ^(\[)(.*)(\])$ ]]; 
     then 
@@ -8,7 +8,7 @@ function _ini_get_section {
     else 
         echo ""; 
     fi
-}
+}                                       #permette di estrarre la sezione dal file di configurazione
 function _ini_get_key_value {
     if [[ "$1" =~ ^([^=]+)=([^=]+)$ ]]; 
     then 
@@ -16,7 +16,7 @@ function _ini_get_key_value {
     else 
         echo ""
     fi
-}
+}                                       #permette di estrarre la chiave dal file di configurazione
 function ini_printdb {
     for i in "${!inidb[@]}"
     do
@@ -25,12 +25,12 @@ function ini_printdb {
        echo -n "key  : $(echo $i | cut -f2 -d ' ');"
        echo  "value: ${inidb[$i]}"
     done
-}
+}                                       #stampa l'intero file di configurazione
 function ini_get_value {
     section=$1
     key=$2
     echo "${inidb[$section $key]}"
-}
+}                                       #permette di estrarre il valore relativo alla SEZIONE e CHIAVE
 function ini_loadfile {
     local cur_section=""
     local cur_key=""
@@ -53,5 +53,5 @@ function ini_loadfile {
         fi
     fi
     done <$1
-}
+}                                       #funzione utilizzata per caricare il file di configurazione in modo da utilizzare poi le varie funzioni realizzate
 ini_loadfile config.ini
