@@ -15,6 +15,7 @@ WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 #____________________________________________________________
 start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT
 SERVER_PID=$!
+echo "$SERVER_PID"
 sleep 5
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE
 TSHARK_PID=$!
