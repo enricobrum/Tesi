@@ -56,7 +56,7 @@ function ini_loadfile {
 }
 ini_loadfile config.ini
 ini_printdb
-echo "value: ${inidb[!inidb[1]]}"
+echo "value: ${!inidb[@]}"
 
 
 
