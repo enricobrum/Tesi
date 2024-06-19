@@ -1,8 +1,4 @@
 #!/bin/bash
-
-chmod +x Lettura_File_Config.sh
-chmod +x Iperf.sh
-chmod +x Wireshark.sh
 source Lettura_File_Config.sh
 source Iperf.sh
 source Wireshark.sh
