@@ -1,5 +1,5 @@
 #!/bin/bash
-avvio_tshark(){
+function avvio_tshark(){
     interfaccia = $1
     durata = $2
     output_file = $3
