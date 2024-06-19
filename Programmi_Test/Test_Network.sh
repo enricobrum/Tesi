@@ -3,9 +3,9 @@
 chmod +x Lettura_File_Config.sh
 chmod +x Iperf.sh
 chmod +x Wireshark.sh
-import ./Lettura_File_Config.sh
-import ./Iperf.sh
-import ./Wireshark.sh
+source Lettura_File_Config.sh
+source Iperf.sh
+source Wireshark.sh
 #___________________________________________________________
 #Costanti ottenute tramite il file di configuraazione
 IPERF_SERVER_IP=$(ini_get_value iperf ip)
