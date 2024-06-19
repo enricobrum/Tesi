@@ -17,15 +17,16 @@ start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT
 SERVER_PID=$!
 sleep 5
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE
+TSHARK_PID=$!
 start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION
-
+wait $TSHARK_PID
 # Controlla se la cattura è stata completata con successo
     echo "Cattura completata. File salvato in $WIRESHARK_OUTPUT_FILE"    # Avvia Wireshark per analizzare il file di cattura
     echo "Avvio Wireshark..."
     wireshark $WIRESHARK_OUTPUT_FILE &
 
 # Terminare il server iperf
-kill "$IPERF_SERVER_PID"
+kill "$SERVER_PID"
 echo "Server iperf terminato."
 
 
