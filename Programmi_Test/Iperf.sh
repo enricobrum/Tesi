@@ -18,7 +18,7 @@ start_iperf_server(){
 #Funzione per l'avvio di un client IPERF passando IP del server, PORT e durata in secondi della comunicazione
 start_iperf_client() {
     echo "Avvio del client iperf verso $SERVER_IP:$PORT per $DURATION secondi..."
-    iperf3 -c $SERVER_IP -p $PORT -t $DURATION
+    iperf3 -c $IPERF_SERVER_IP -p $IPERF_SERVER_PORT -t $IPERF_CLIENT_DURATION
 }
 IPERF_CLIENT_PID=$(start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION)
 IPERF_SERVER_PID=$(start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_SERVER_OUTPUT_FILE)
