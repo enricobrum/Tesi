@@ -12,7 +12,7 @@ IPERF_SERVER_IP=$(ini_get_value iperf ip)
 IPERF_SERVER_PORT=$(ini_get_value iperf port)
 IPERF_SERVER_OUTPUT_FILE=$(ini_get_value iperf output_file)
 IPERF_CLIENT_DURATION=$(ini_get_value iperf client_duration)
-
+IPERF_CLIENT_PORT=$(ini_get_value iperf client_port)
 WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
 WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
@@ -20,7 +20,7 @@ WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 IPERF_SERVER_PID=$(start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT)
 sleep 5
 WIRESHARK_PID=$(avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE)
-IPERF_CLIENT_PID=$(start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION)
+IPERF_CLIENT_PID=$(start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION)
 wait $WIRESHARK_PID
 # Controlla se la cattura è stata completata con successo
 if [ $? -eq 0 ]; then
