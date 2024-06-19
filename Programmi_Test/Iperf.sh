@@ -2,6 +2,7 @@
 chmod +x Lettura_File_Config.sh
 source ./Lettura_File_Config.sh
 IPER_SERVER_IP=$(ini_get_value iperf ip)
+echo "$IPER_SERVER_IP"
 IPER_SERVER_PORT=$(ini_get_value iperf port)
 IPER_SERVER_OUTPUT_FILE=$(ini_get_value iperf output_file)
 start_iperf_server(){
