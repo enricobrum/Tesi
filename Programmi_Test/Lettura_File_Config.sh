@@ -55,8 +55,7 @@ function ini_loadfile {
     done <$1
 }
 ini_loadfile config.ini
-ini_printdb
-echo "value: $(ini_get_value server1 port)"
+
 
 
 
