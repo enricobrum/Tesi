@@ -9,9 +9,9 @@ start_iperf_server(){
     ip=$1
     port=$2
     output_file=$3
-    echo "Avvio del server iperf su $ip:$port..."
+    echo "Avvio del server iperf su $ip : $port ..."
     iperf3 -s -B $ip -p $port > $output_file 2>&1 &
     echo $! # Restituisce il PID del processo avviato
 }
 IPERF_SERVER_PID=$(start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_SERVER_OUTPUT_FILE)
-echo "$IPERF_SERVER_PID"
+echo $IPERF_SERVER_PID
