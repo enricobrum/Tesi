@@ -54,9 +54,4 @@ function ini_loadfile {
     fi
     done <$1
 }
-ini_loadfile config.ini
-
-
-
-
-
+ini_loadfile config.in
