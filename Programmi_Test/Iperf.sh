@@ -13,7 +13,7 @@ function start_iperf_client() {
     port=$2
     duration=$3
     echo "Avvio del client iperf verso $SERVER_IP:$PORT per $DURATION secondi..."
-    iperf3 -c $ip -p $port -t $duration &
+    iperf3 -c $ip -p $port -t $duration 
     echo $!
 }
 
