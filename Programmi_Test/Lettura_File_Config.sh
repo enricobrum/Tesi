@@ -56,7 +56,7 @@ function ini_loadfile {
 }
 ini_loadfile config.ini
 ini_printdb
-echo "value: ${inidb[{nodo centrale} {ip}]}"
+echo "value: ${inidb[$(nodo centrale) $(ip)]}"
 
 
 
