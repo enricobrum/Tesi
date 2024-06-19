@@ -13,4 +13,4 @@ start_iperf_server(){
     echo $! # Restituisce il PID del processo avviato
 }
 IPERF_SERVER_PID=$(start_iperf_server IPERF_SERVER_IP IPERF_SERVER_PORT IPERF_SERVER_OUTPUT_FILE)
-KILL $IPERF_SERVER_PID
+kill $IPERF_SERVER_PID
