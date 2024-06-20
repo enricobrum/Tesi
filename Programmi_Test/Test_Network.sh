@@ -14,10 +14,10 @@ WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
 WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 #____________________________________________________________
-start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT
+start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT &
 SERVER_PID=$!
 sleep 5
-avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE
+avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE &
 TSHARK_PID=$!
 start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION
 wait $TSHARK_PID
