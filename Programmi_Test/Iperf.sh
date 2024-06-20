@@ -4,7 +4,7 @@ start_iperf_server(){
     local ip=$1
     local port=$2
     echo "Avvio del server iperf su $ip : $port ..."
-    iperf3 -s $ip -p $port 
+    iperf3 -s -B $ip -p $port 
     echo $! # Restituisce il PID del processo avviato
 }
 export -f start_iperf_server
