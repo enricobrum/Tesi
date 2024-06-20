@@ -29,6 +29,7 @@ if [ $? -eq 0 ]; then
     # Avvia Wireshark per analizzare il file di cattura
     echo "Avvio Wireshark..."
     wireshark $WIRESHARK_OUTPUT_FILE &
+    kill $!
 else
     echo "Errore nella cattura dei pacchetti."
     exit 1
