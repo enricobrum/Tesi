@@ -7,3 +7,4 @@ avvio_tshark(){
     tshark -i $interfaccia -a duration:$durata -w $output_file 
     echo $!
 }
+export -f avvio_tshark
