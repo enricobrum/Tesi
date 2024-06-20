@@ -2,8 +2,8 @@
 chmod +x Lettura_File_Config.sh
 chmod +x Iperf.sh
 chmod +x Wireshark.sh
-source Iperf.sh
-source Wireshark.sh
+. Iperf.sh
+. Wireshark.sh
 source Lettura_File_Config.sh
 #___________________________________________________________
 #Costanti ottenute tramite il file di configuraazione
