@@ -16,15 +16,15 @@ WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
 WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 #____________________________________________________________
-./Iperf.sh start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT &
+start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT &
 sleep 3
+start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION &
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE &
 TSHARK_PID=$!
-start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION &
-IPERF_TEST_PID=$!
-wait $TSHARK_PID
+
+wait $!
 if [ $? -eq 0 ]; then
-    echo "Cattura completata. File salvato in $OUTPUT_FILE"
+    echo "Cattura completata. File salvato in $WIRESHARK_OUTPUT_FILE"
     # Avvia Wireshark per analizzare il file di cattura
     echo "Avvio Wireshark..."
     wireshark $WIRESHARK_OUTPUT_FILE &
