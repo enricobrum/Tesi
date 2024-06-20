@@ -1,6 +1,6 @@
 #!/bin/bash
 #Funzione per l'avvio di un server IPERF passando IP, PORT e file di destinazione dell'output
-function start_iperf_server(){
+start_iperf_server(){
     ip=$1
     port=$2
     echo "Avvio del server iperf su $ip : $port ..."
@@ -8,7 +8,7 @@ function start_iperf_server(){
     echo $! # Restituisce il PID del processo avviato
 }
 #Funzione per l'avvio di un client IPERF passando IP del server, PORT e durata in secondi della comunicazione
-function start_iperf_client() {
+start_iperf_client() {
     ip=$1
     port=$2
     duration=$3
