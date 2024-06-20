@@ -1,8 +1,7 @@
 #!/bin/bash
-source Lettura_File_Config.sh
 source Iperf.sh
 source Wireshark.sh
-./Lettura_File_Config
+source ./Lettura_File_Config
 #___________________________________________________________
 #Costanti ottenute tramite il file di configuraazione
 IPERF_SERVER_IP=$(ini_get_value iperf ip_server)
