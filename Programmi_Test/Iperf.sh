@@ -5,7 +5,7 @@ start_iperf_server(){
     local port=$2
     echo "Avvio del server iperf su $ip : $port ..."
     iperf3 -s -B $ip -p $port 
-    return $! # Restituisce il PID del processo avviato
+    echo $! # Restituisce il PID del processo avviato
 }
 export -f start_iperf_server
 #Funzione per l'avvio di un client IPERF passando IP del server, PORT e durata in secondi della comunicazione
@@ -15,7 +15,7 @@ start_iperf_client() {
     local duration=$3
     echo "Avvio del client iperf verso $ip:$port per $duration secondi..."
     iperf3 -c $ip -p $port -t $duration 
-    return $!
+    echo $!
 }
 export -f start_iperf_client
 
