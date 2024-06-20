@@ -19,7 +19,7 @@ SERVER_PID=$!
 sleep 5
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE &
 TSHARK_PID=$!
-start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION
+start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION &
 wait $TSHARK_PID
 if [ $? -eq 0 ]; then
     echo "Cattura completata. File salvato in $OUTPUT_FILE"
