@@ -26,7 +26,6 @@ IPERF_TEST_PID=$!
 wait $IPERF_TEST_PID
 if [ $? -eq 0 ]; then
     echo "Cattura completata. File salvato in $OUTPUT_FILE"
-    
     # Avvia Wireshark per analizzare il file di cattura
     echo "Avvio Wireshark..."
     wireshark $WIRESHARK_OUTPUT_FILE &
@@ -37,7 +36,7 @@ fi
 # Terminare il server iperf
 kill $SERVER_PID
 echo "Server iperf terminato."
-
+done
 
 
 
