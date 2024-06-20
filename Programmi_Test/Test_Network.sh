@@ -1,5 +1,5 @@
 #!/bin/bash
-. Lettura_File_Config.sh
+source ./Lettura_File_Config.sh
 . Iperf.sh
 . Wireshark.sh
 #___________________________________________________________
