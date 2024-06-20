@@ -33,7 +33,7 @@ else
     exit 1
 fi
 # Terminare il server iperf
-kill $SERVER_PID
+kill $PID
 echo "Server iperf terminato."
 
 
