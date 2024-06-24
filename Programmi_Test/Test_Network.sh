@@ -41,6 +41,6 @@ fi
 kill $PID
 echo "Server iperf terminato."
 
-bash -c ./Analisi_Pacchetti.sh "$WIRESHARK_OUTPUT_FILE" "$IP_SERVER" "$FILE_CSV_WIRESHARK"
+./Analisi_Pacchetti.sh "$WIRESHARK_OUTPUT_FILE" "$IP_SERVER" "$FILE_CSV_WIRESHARK"
 
 
