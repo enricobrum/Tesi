@@ -10,5 +10,5 @@ python3 Server.py --host "$ip_server" --port "$port_server" &
 sleep 5
 for param1 in "${dim_payload[@]}"
     do
-      python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1"
+      python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" &
 done
