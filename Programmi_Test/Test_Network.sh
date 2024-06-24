@@ -2,6 +2,7 @@
 chmod +x Lettura_File_Config.sh
 chmod +x Iperf.sh
 chmod +x Wireshark.sh
+chmod +x Analisi_Pacchetti.sh
 . Iperf.sh
 . Wireshark.sh
 source Lettura_File_Config.sh
@@ -15,6 +16,8 @@ IPERF_CLIENT_PORT=$(ini_get_value iperf client_port)
 WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
 WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
+IP_SERVER=$(ini_get_value server ip)
+FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv)
 #____________________________________________________________
 start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT 
 PID=$!
@@ -38,6 +41,6 @@ fi
 kill $PID
 echo "Server iperf terminato."
 
-
+bash -c ./Analisi_Pacchetti.sh "$WIRESHARK_OUTPUT_FILE" "$IP_SERVER" "$FILE_CSV_WIRESHARK"
 
 
