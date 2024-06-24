@@ -19,7 +19,10 @@ WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT 
 PID=$!
 sleep 3
-start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION 
+start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION
+#_____________________________________________________________________________
+
+#_____________________________________________________________________________
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE 
 wait $!
 if [ $? -eq 0 ]; then
