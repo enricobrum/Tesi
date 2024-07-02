@@ -32,7 +32,7 @@ for test in "${TRAFFICO_IPERF[@]}"
     pid_iperf=$!
     for dim in "${DIM_PAYLOAD[@]}"
         do
-        python3 Client.py --server_host "$IP_SERVER" --server_port "$IPERF_CLIENT_PORT" --payload_size "$dim" 
+        python3 Client.py --server_host "$IP_SERVER" --server_port "$IPERF_SERVER_PORT" --payload_size "$dim" &
     done
     wait $pid_iperf
 done
