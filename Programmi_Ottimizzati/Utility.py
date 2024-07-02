@@ -21,3 +21,4 @@ def time_stamp():
 # 2.1-Definire come variare il traffico e porre diverse situazioni
 TIPO_TEST=("TCP","TCP_IPERF","TCP_IPERF_PAR")
 
+
