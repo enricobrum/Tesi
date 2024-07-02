@@ -25,7 +25,8 @@ FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv) #file .csv in cui vengono 
 #_____________________________________________________________________________________________________________________
 #Avvio del Client IPERF & del Client che manderà messaggi al server di echo variando la dimensione del payload dei pacchetti:
 TRAFFICO_IPERF=("1Mbits" "100Mbits" "1Gbits" "9Gbits")
-DIM_PAYLOAD=("8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096" "8192" "16384")
+#DIM_PAYLOAD=("8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096" "8192" "16384")
+DIM_PAYLOAD=("0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0")
 for test in "${TRAFFICO_IPERF[@]}"
     do
     start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI 
