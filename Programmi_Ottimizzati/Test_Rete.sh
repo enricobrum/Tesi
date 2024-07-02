@@ -31,7 +31,7 @@ for test in "${TRAFFICO_IPERF[@]}"
     start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI &
     for dim in "${DIM_PAYLOAD[@]}"
         do
-        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$dim" &
+        python3 Client.py --server_host "$IP_SERVER" --server_port "$IPERF_CLIENT_PORT" --payload_size "$dim" &
     done
 done
 
