@@ -17,4 +17,26 @@ PORT_SERVER=$(ini_get_value server port) #port in cui si pone in ascolto il serv
 python3 Server.py --host "$IP_SERVER" --port "$PORT_SERVER" & #avvio del server con i parametri ottenuti da file di configurazione
 IPERF_SERVER_IP=$(ini_get_value iperf ip_server) #indirizzo IP del server iperf
 IPERF_SERVER_PORT=$(ini_get_value iperf server_port) #porta su cui il server si pone in ascolto
-start_iperf_server "$IPERF_SERVER_IP" "$IPERF_SERVER_PORT" &
+start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT & #avvia il server iperf
+WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
+WIRESHARK_DURATA=$(ini_get_value wireshark durata)
+WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
+FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv)
+avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE 
+wait $!
+if [ $? -eq 0 ]; then
+    echo "Cattura completata. File salvato in $WIRESHARK_OUTPUT_FILE"
+    # Avvia Wireshark per analizzare il file di cattura
+    wireshark $WIRESHARK_OUTPUT_FILE &
+    kill $!
+else
+    echo "Errore nella cattura dei pacchetti."
+    exit 1
+fi
+# Terminare il server iperf
+kill $PID
+echo "Server iperf terminato."
+
+./Analisi_Pacchetti.sh "$WIRESHARK_OUTPUT_FILE" "$IP_SERVER" "$FILE_CSV_WIRESHARK"
+
+
