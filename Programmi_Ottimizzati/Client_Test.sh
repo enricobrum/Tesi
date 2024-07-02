@@ -22,7 +22,9 @@ for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf
       do
         python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" #programma python che avvia il client di test
       done
-    wait $(pidof -s iperf3)
+    pid=$(pidof -s iperf3)
+    wait $(pidof -o pid iperf3)
+
   done
 
 
