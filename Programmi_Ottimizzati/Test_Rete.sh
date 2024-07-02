@@ -29,7 +29,7 @@ TRAFFICO_IPERF=("1Mbits" "100Mbits" "1Gbits" "9Gbits")
 DIM_PAYLOAD=("0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0")
 for test in "${TRAFFICO_IPERF[@]}"
     do
-    start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI 
+    start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE 
     pid_iperf=$!
     for dim in "${DIM_PAYLOAD[@]}"
         do
