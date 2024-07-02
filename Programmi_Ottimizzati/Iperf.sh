@@ -13,6 +13,7 @@ start_iperf_client() {
     local duration=$3
     local bitrate=$4
     iperf3 -c $ip -p $port -t $duration -b $bitrate &
+    return $!
 }
 
 
