@@ -23,12 +23,15 @@ IP_SERVER=$(ini_get_value server ip) #indirizzo IP del SERVER realizzato per i t
 FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv) #file .csv in cui vengono salvati i valori ottenuti da wireshark 
 
 #_____________________________________________________________________________________________________________________
-#Avvio del Client IPERF:
-TRAFFICO_IPERF=("1Mbits","100Mbits","1Gbits","9Gbits")
+#Avvio del Client IPERF & del Client che manderà messaggi al server di echo variando la dimensione del payload dei pacchetti:
+TRAFFICO_IPERF=("1Mbits" "100Mbits" "1Gbits" "9Gbits")
+DIM_PAYLOAD=("8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096" "8192" "16384")
 for test in "${TRAFFICO_IPERF[@]}"
-    bash -c "start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT"
-    PID_SERVER_PORT=$!
-    sleep 5
+    do
+    start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI &
+    for dim in "${DIM_PAYLOAD[@]}"
+        do
+        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$dim" &
+    done
+done
 
-#_____________________________________________________________________________________________________________________
-#Avvio del Client per il test tramite la variazione del payload
