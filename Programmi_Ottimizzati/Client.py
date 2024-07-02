@@ -13,17 +13,17 @@ def tcp_client(server_host,server_port,payload_size):
     try:
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as client_socket:
             client_socket.connect((server_host,server_port))
-            print(f"Connessione al server TCP {server_host}:{server_port}")
+        #   print(f"Connessione al server TCP {server_host}:{server_port}")
             payload=b'a'*payload_size
             sec1,us1=Utility.time_stamp()
             client_socket.sendall(payload)
-            print(f"Inviati {payload_size} bytes")
+        #   print(f"Inviati {payload_size} bytes")
             data=client_socket.recv(65536) #buffer impostato al massimo in modo da effettuare test con variazione del payload
             sec2,us2=Utility.time_stamp()
             file.write(str(sec1)+'.'+str(us1)+';')
             file.write(str(sec2)+'.'+str(us2)+';')
             file.write("\n")
-            print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
+        #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
             file.close()
     except Exception as e:
         print(f"Eccezione {e} durante la connessione con il server.")
