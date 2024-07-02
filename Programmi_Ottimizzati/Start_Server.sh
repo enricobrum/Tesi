@@ -8,6 +8,7 @@
 chmod +x Lettura_File_Config.sh 
 chmod +x Iperf.sh
 chmod +x Wireshark.sh
+chmod +x Analisi_Pacchetti.sh
 source Lettura_File_Config.sh #Lettura del file di configurazione contenenti i valori utilizzati per i test
 . Iperf.sh #Funzioni per l'avvio di server il client iperf
 . Wireshark.sh #Funzione per l'avvio dell'ascolto su wireshark

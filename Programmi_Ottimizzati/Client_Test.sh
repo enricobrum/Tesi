@@ -15,11 +15,11 @@ IPERF_SERVER_PORT=$(ini_get_value iperf server_port)
 
 for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf
   do
-    start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION $dim & #chiamata a funzione di avvio del client con i parametri passati
+    start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION $dim #chiamata a funzione di avvio del client con i parametri passati
     pid=$! #salvataggio del pid del processo client iperf in modo da poter sapere quando è terminato
     for param1 in "${dim_payload[@]}" #loop che varia la dimensione dei payload dei messaggi scambiati tra client e server
       do
-        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" #programma python che avvia il client di test
+        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" & #programma python che avvia il client di test
     done
     wait pid #una volta terminato lo scambio, rimane in attesa che termini il processo di iperf in modo da avanzare nel loop
 done
