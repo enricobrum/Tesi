@@ -14,14 +14,15 @@ source Lettura_File_Config.sh #Lettura del file di configurazione contenenti i v
 #______________________________________________________________________________________________________________________________________
 IP_SERVER=$(ini_get_value server ip) #indirizzo IP del server di echo
 PORT_SERVER=$(ini_get_value server port) #port in cui si pone in ascolto il server di echo
-python3 Server.py --host "$IP_SERVER" --port "$PORT_SERVER" & #avvio del server con i parametri ottenuti da file di configurazione
 IPERF_SERVER_IP=$(ini_get_value iperf ip_server) #indirizzo IP del server iperf
 IPERF_SERVER_PORT=$(ini_get_value iperf server_port) #porta su cui il server si pone in ascolto
-start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT & #avvia il server iperf
 WIRESHARK_INTERFACCIA=$(ini_get_value wireshark interfaccia)
 WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv)
+#_____________________________________________________________________________________________________________________________________
+python3 Server.py --host "$IP_SERVER" --port "$PORT_SERVER" & #avvio del server con i parametri ottenuti da file di configurazione
+start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT & #avvia il server iperf
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE 
 wait $!
 if [ $? -eq 0 ]; then

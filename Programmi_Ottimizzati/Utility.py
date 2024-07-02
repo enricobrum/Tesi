@@ -19,6 +19,6 @@ def time_stamp():
 #   connesso alla rete (Raspberry, PC) tramite i moduli Quectel.
 #   NOME TEST: TCP_IPERF*{tipo traffico}
 # 2.1-Definire come variare il traffico e porre diverse situazioni
-TIPO_TEST=("TCP","TCP_IPERF","TCP_IPERF_PAR")
+
 
 
