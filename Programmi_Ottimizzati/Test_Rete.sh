@@ -28,12 +28,12 @@ TRAFFICO_IPERF=("1Mbits" "100Mbits" "1Gbits" "9Gbits")
 DIM_PAYLOAD=("8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096" "8192" "16384")
 for test in "${TRAFFICO_IPERF[@]}"
     do
-    start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI &
+    start_iperf_client $IPERF_SERVER_IP $IPERF_SERVER_PORT $IPERF_CLIENT_DURATION $IPERF_CLIENT_BITRATE $IPERF_CLIENT_MULTI 
     pid_iperf=$!
     for dim in "${DIM_PAYLOAD[@]}"
         do
-        python3 Client.py --server_host "$IP_SERVER" --server_port "$IPERF_CLIENT_PORT" --payload_size "$dim" &
+        python3 Client.py --server_host "$IP_SERVER" --server_port "$IPERF_CLIENT_PORT" --payload_size "$dim" 
     done
-    wait pid_iperf
+    wait $pid_iperf
 done
 
