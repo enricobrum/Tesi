@@ -17,4 +17,4 @@ PORT_SERVER=$(ini_get_value server port) #port in cui si pone in ascolto il serv
 bash -c python3 Server.py --host "$ip_server" --port "$port_server" & #avvio del server con i parametri ottenuti da file di configurazione
 IPERF_SERVER_IP=$(ini_get_value iperf ip_server) #indirizzo IP del server iperf
 IPERF_SERVER_PORT=$(ini_get_value iperf server_port) #porta su cui il server si pone in ascolto
-bash -c "start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT" &
+bash -c start_iperf_server "$IPERF_SERVER_IP" "$IPERF_SERVER_PORT" &
