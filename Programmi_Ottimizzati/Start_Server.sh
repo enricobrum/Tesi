@@ -35,9 +35,9 @@ else
     echo "Errore nella cattura dei pacchetti."
     exit 1
 fi
-# Terminare il server iperf
-kill $PID
-echo "Server iperf terminato."
+# Terminare il server iperf e python3
+killall iperf3
+killall python3
 
 ./Analisi_Pacchetti.sh "$WIRESHARK_OUTPUT_FILE" "$IP_SERVER" "$FILE_CSV_WIRESHARK"
 
