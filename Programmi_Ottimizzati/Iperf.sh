@@ -15,7 +15,7 @@ start_iperf_client() {
     local bitrate=$4
     local parallel=$5
     echo "Avvio del client iperf verso $ip:$port per $duration secondi..."
-    iperf3 -c $ip -p $port -t $duration -b $bitrate &
+    iperf3 -c $ip -p $port -t $duration &
     echo $!
 }
 
