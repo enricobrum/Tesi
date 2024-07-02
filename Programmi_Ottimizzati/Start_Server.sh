@@ -29,8 +29,8 @@ wait $!
 if [ $? -eq 0 ]; then
     echo "Cattura completata. File salvato in $WIRESHARK_OUTPUT_FILE"
     # Avvia Wireshark per analizzare il file di cattura
-    wireshark $WIRESHARK_OUTPUT_FILE &
-    kill $!
+  #  wireshark $WIRESHARK_OUTPUT_FILE &
+  #  kill $!
 else
     echo "Errore nella cattura dei pacchetti."
     exit 1
