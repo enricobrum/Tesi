@@ -28,7 +28,7 @@ avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE
 wait $!
 if [ $? -eq 0 ]; then
     echo "Cattura completata. File salvato in $WIRESHARK_OUTPUT_FILE"
-    # Avvia Wireshark per analizzare il file di cattura
+  # Avvia Wireshark per analizzare il file di cattura
   #  wireshark $WIRESHARK_OUTPUT_FILE &
   #  kill $!
 else
