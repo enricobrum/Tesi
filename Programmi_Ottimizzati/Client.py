@@ -9,7 +9,7 @@ import Utility
 
 def tcp_client(server_host,server_port,payload_size,type_test):
     file=open("Istanti_temportali.csv","a")
-    file.write("Inviato;Ricevuto;PackSize;Test;\n")
+    file.write("Inviato;Ricevuto;PackSize;Test;RTT\n")
     try:
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as client_socket:
             client_socket.connect((server_host,server_port))
@@ -23,6 +23,12 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             file.write(str(sec1)+'.'+str(us1)+';')
             file.write(str(sec2)+'.'+str(us2)+';')
             file.write(str(payload_size)+';'+type_test+';')
+            rtt_sec=sec2-sec1
+            if rtt_sec >= 0:
+                rtt_us=us2-us1
+            else:
+                rtt_us=us1-us2
+            file.write(str(rtt_us)+';')
             file.write("\n")
         #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
             file.close()
