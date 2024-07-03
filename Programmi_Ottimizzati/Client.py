@@ -9,7 +9,8 @@ import Utility
 
 def tcp_client(server_host,server_port,payload_size,type_test):
     file=open("Istanti_temportali.csv","a")
-    file.write("Inviato;Ricevuto;PackSize;Test;RTT\n")
+    if file.tell() == 0:
+        file.write("Inviato;Ricevuto;PackSize;Test;RTT\n")
     try:
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as client_socket:
             client_socket.connect((server_host,server_port))
