@@ -1,7 +1,8 @@
 #!/bin/bash
-
+chmod +x Wireshark.sh
 chmod +x Lettura_File_Config.sh
 . Iperf.sh
+. Wireshark.sh
 source Lettura_File_Config.sh
 # Definisci i valori dimensione payload
 dim_payload=("8" "16" "32" "64" "128" "256" "512" "1024" "2048" "4096" "8192" "16384" "32768" "65536")
