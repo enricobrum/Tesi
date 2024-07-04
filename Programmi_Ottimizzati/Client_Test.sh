@@ -6,7 +6,7 @@ chmod +x Lettura_File_Config.sh
 source Lettura_File_Config.sh
 # Definisci i valori dimensione payload
 dim_payload=("8" "16" "32" "64" "128" "256" "512" "1024" "1500")
-dim_bw=("8K" "80K" "800K" "8M")
+dim_bw=("1M" "8M" "10M" "80M")
 ip_server=$(ini_get_value server ip)
 port_server=$(ini_get_value server port)
 IPERF_CLIENT_DURATION=$(ini_get_value iperf client_duration)
