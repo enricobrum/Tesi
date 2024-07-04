@@ -16,7 +16,7 @@ IPERF_SERVER_PORT=$(ini_get_value iperf server_port)
 for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf
   do
     #chiamata a funzione di avvio del client con i parametri passati
-    #start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION $dim & #salvataggio del pid del processo client iperf in modo da poter sapere quando è terminato
+    start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $IPERF_CLIENT_DURATION $dim & #salvataggio del pid del processo client iperf in modo da poter sapere quando è terminato
     #pid=$!
     #echo "Client iperf avvianto al: $IPERF_SERVER_IP:$IPERF_SERVER_PORT per $IPERF_CLIENT_DURATION s con $dim di bitrate."
     for param1 in "${dim_payload[@]}" #loop che varia la dimensione dei payload dei messaggi scambiati tra client e server
