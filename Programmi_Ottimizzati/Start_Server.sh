@@ -22,8 +22,8 @@ WIRESHARK_DURATA=$(ini_get_value wireshark durata)
 WIRESHARK_OUTPUT_FILE=$(ini_get_value wireshark output_file)
 FILE_CSV_WIRESHARK=$(ini_get_value wireshark out_csv)
 #_____________________________________________________________________________________________________________________________________
-python3 Server.py --host "$IP_SERVER" --port "$PORT_SERVER" & #avvio del server con i parametri ottenuti da file di configurazione
-start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT & #avvia il server iperf
+#python3 Server.py --host "$IP_SERVER" --port "$PORT_SERVER" & #avvio del server con i parametri ottenuti da file di configurazione
+#start_iperf_server $IPERF_SERVER_IP $IPERF_SERVER_PORT & #avvia il server iperf
 avvio_tshark $WIRESHARK_INTERFACCIA $WIRESHARK_DURATA $WIRESHARK_OUTPUT_FILE  
 wait $!
 if [ $? -eq 0 ]; then
