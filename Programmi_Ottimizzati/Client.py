@@ -28,7 +28,7 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             if rtt_sec >= 0:
                 rtt_us=us2-us1
             else:
-                rtt_us=us1-us2
+                rtt_us=(1000000+us2-us1)
             file.write(str(rtt_us)+';')
             file.write("\n")
         #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
