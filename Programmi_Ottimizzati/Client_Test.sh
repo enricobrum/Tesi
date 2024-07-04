@@ -26,7 +26,7 @@ for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf
     echo "Client iperf avvianto al: $IPERF_SERVER_IP:$IPERF_SERVER_PORT per $IPERF_CLIENT_DURATION s con $dim di bitrate."
     for param1 in "${dim_payload[@]}" #loop che varia la dimensione dei payload dei messaggi scambiati tra client e server
       do
-        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" --type_test "$dim" #programma python che avvia il client di test
+        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --payload_size "$param1" --type_test "$dim" & #programma python che avvia il client di test
         wait $!
       done
     wait $pid #aspetta che iperf finisca
