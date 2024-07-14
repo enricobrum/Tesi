@@ -53,7 +53,7 @@ def tcp_client(server_host,server_port,payload_size,type_test):
         #   print(f"Connessione al server TCP {server_host}:{server_port}")
             payload=b'a'*payload_size    
             elapsedtime=timeit.timeit(send_receive(payload,payload_size,type_test,client_socket,file),number=1)
-            print(str(elapsedtime))
+        
             time.sleep(0.01)
         #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
             file.close()
