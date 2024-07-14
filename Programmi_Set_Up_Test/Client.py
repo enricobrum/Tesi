@@ -52,12 +52,11 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             client_socket.connect((server_host,server_port))
         #   print(f"Connessione al server TCP {server_host}:{server_port}")
             payload=b'a'*payload_size    
-        while True:
             elapsedtime=timeit.timeit(send_receive(payload,payload_size,type_test,client_socket,file),number=1)
             print(elapsedtime)
             time.sleep(0.01)
         #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
-        
+            file.close()
     except Exception as e:
         print(f"Eccezione {e} durante la connessione con il server.")
 
