@@ -20,7 +20,7 @@ import Utility #libreria personale contenente la funzione
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
 def tcp_client(server_host,server_port,payload_size,type_test):
-    filecsv="istanti_temporali_"+str(date.fromisoformat)+".csv"
+    filecsv="istanti_temporali_"+str(date.isoformat)+".csv"
     file=open(filecsv,"a")
     if file.tell()==0:
         file.write("Inviato,Ricevuto,PackSize,Traffico,RTT\n")
