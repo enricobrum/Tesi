@@ -4,7 +4,7 @@
 #tramite Docker delle funzioni di rete necessarie per 
 #il funzionamento dell'infrastruttura 5G privata.
 #_________________________________________________________
-from datetime import date
+from datetime import datetime 
 import socket #libreria necessaria all'utilizzo dei 
               #protocolli di comunicazione
 import argparse #libreria necessaria all'utilizzo degli 
@@ -20,18 +20,38 @@ import Utility #libreria personale contenente la funzione
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
 def tcp_client(server_host,server_port,payload_size,type_test):
-    filecsv="istanti_temporali_"+str(date.isoformat())+".csv"
+    data_corrente = datetime.now()
+    data_stringa = data_corrente.strftime("%Y-%m-%d")
+    filecsv="istanti_temporali_"+data_stringa+".csv"
     file=open(filecsv,"a")
     if file.tell()==0:
         file.write("Inviato,Ricevuto,PackSize,Traffico,RTT\n")
         print("File csv creato.")
-
-
-
-
-
-
-
+    try:
+        with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as client_socket:
+            client_socket.connect((server_host,server_port))
+        #   print(f"Connessione al server TCP {server_host}:{server_port}")
+            payload=b'a'*payload_size
+            sec1,us1=Utility.time_stamp()
+            client_socket.sendall(payload)
+        #   print(f"Inviati {payload_size} bytes")
+            data=client_socket.recv(65536) #buffer impostato al massimo
+            #in modo da effettuare test con variazione del payload
+            sec2,us2=Utility.time_stamp()
+            file.write(str(sec1)+'.'+str(us1)+',')
+            file.write(str(sec2)+'.'+str(us2)+',')
+            file.write(str(payload_size)+','+type_test+',')
+            rtt_sec=sec2-sec1
+            if rtt_sec >= 0:
+                rtt_us=us2-us1
+            else:
+                rtt_us=(us2-us1)
+            file.write(str(rtt_us))
+            file.write("\n")
+        #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
+            file.close()
+    except Exception as e:
+        print(f"Eccezione {e} durante la connessione con il server.")
 
 
 #_________________________________________________________________
