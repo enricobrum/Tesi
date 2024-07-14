@@ -4,8 +4,8 @@
 #tramite Docker delle funzioni di rete necessarie per 
 #il funzionamento dell'infrastruttura 5G privata.
 #_________________________________________________________
-from datetime import datetime 
-import timeit
+from datetime import datetime
+
 import time
 import socket #libreria necessaria all'utilizzo dei 
               #protocolli di comunicazione
@@ -21,7 +21,7 @@ import Utility #libreria personale contenente la funzione
 #messaggio da inviare. Infine e' anche passata la tipologia
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
-timetowait=(0.01,0.1,1,5,10)
+timetowait=[0.01,0.1,1,5,10]
 def send_receive(payload,payload_size,type_test,client_socket,file):
             sec1,us1=Utility.time_stamp()
             client_socket.sendall(payload)
