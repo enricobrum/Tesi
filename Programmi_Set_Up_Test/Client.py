@@ -38,6 +38,7 @@ def send_receive(payload,payload_size,type_test,client_socket,file):
                 rtt_us=(us2-us1)
             file.write(str(rtt_us))
             file.write("\n")
+            
 def tcp_client(server_host,server_port,payload_size,type_test):
     data_corrente = datetime.now()
     data_stringa = data_corrente.strftime("%Y-%m-%d")
@@ -56,7 +57,7 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             print(elapsedtime)
             time.sleep(0.01)
         #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
-        file.close()
+        
     except Exception as e:
         print(f"Eccezione {e} durante la connessione con il server.")
 
