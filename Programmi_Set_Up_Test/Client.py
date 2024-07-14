@@ -21,6 +21,7 @@ import Utility #libreria personale contenente la funzione
 #messaggio da inviare. Infine e' anche passata la tipologia
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
+waiting=[0.01,0.1,1,5,10]
 def send_receive(payload,payload_size,type_test,client_socket,file):
             sec1,us1=Utility.time_stamp()
             client_socket.sendall(payload)
@@ -52,11 +53,11 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             client_socket.connect((server_host,server_port))
         #   print(f"Connessione al server TCP {server_host}:{server_port}")
             payload=b'a'*payload_size    
-            send_receive(payload,payload_size,type_test,client_socket,file)
-        
-            time.sleep(0.01)
-        #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
-            file.close()
+        for waiting in timetowait:
+                send_receive(payload,payload_size,type_test,client_socket,file)
+                time.sleep(waiting)
+                #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
+        file.close()
     except Exception as e:
         print(f"Eccezione {e} durante la connessione con il server.")
 
