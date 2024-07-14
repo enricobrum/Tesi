@@ -1,7 +1,7 @@
 #Programma Python per la realizzazione di un Client sfruttando il protocollo TCP.
 #Questo client ha la funzione di inviare verso il server specificato dai parametri,
 #un messaggio contenente il payload generato dalla dimensione passata tramite parametro.
-#Una volta inviato, tale Client si pone in attesa di una risposta dal server che sarà
+#Una volta inviato, tale Client si pone in attesa di una risposta dal server che sara'
 #realizzato in modo da emettere un echo del messaggio. 
 import socket
 import argparse
@@ -19,7 +19,8 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             sec1,us1=Utility.time_stamp()
             client_socket.sendall(payload)
         #   print(f"Inviati {payload_size} bytes")
-            data=client_socket.recv(65536) #buffer impostato al massimo in modo da effettuare test con variazione del payload
+            data=client_socket.recv(65536) #buffer impostato al massimo
+            #in modo da effettuare test con variazione del payload
             sec2,us2=Utility.time_stamp()
             file.write(str(sec1)+'.'+str(us1)+';')
             file.write(str(sec2)+'.'+str(us2)+';')
