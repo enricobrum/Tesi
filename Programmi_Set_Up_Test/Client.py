@@ -53,11 +53,11 @@ def tcp_client(server_host,server_port,payload_size,type_test):
             client_socket.connect((server_host,server_port))
         #   print(f"Connessione al server TCP {server_host}:{server_port}")
             payload=b'a'*payload_size    
-        for waiting in timetowait:
+            for waiting in timetowait:
                 send_receive(payload,payload_size,type_test,client_socket,file)
                 time.sleep(waiting)
                 #   print(f"Ricevuto {len(data)} bytes da {server_host}:{server_port}")
-        file.close()
+            file.close()
     except Exception as e:
         print(f"Eccezione {e} durante la connessione con il server.")
 
