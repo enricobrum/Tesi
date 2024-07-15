@@ -16,8 +16,7 @@ for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf
     #chiamata a funzione di avvio del client con i parametri passati
     start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $dim 
     #programma python che avvia il client di test
-        python3 Client.py --server_host "$ip_server" --server_port "$port_server" 
-        .. --type_test "$dim" 
+        python3 Client.py --server_host "$ip_server" --server_port "$port_server" --type_test "$dim" 
         wait $!
       done
     killall iperf3
