@@ -15,6 +15,7 @@ chmod +x Analisi_Pacchetti.sh
 source Lettura_File_Config.sh #Lettura del file di configurazione contenenti
                               #i valori utilizzati per i test
 . Wireshark.sh #Funzione per l'avvio dell'ascolto su wireshark
+. Iperf.sh
 #_______________________________________________________________________________
 IP_SERVER=$(ini_get_value server ip) #indirizzo IP del server di echo
 PORT_SERVER=$(ini_get_value server port) #port in cui si pone il server di echo
