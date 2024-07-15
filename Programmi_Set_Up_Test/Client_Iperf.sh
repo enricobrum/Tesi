@@ -15,7 +15,7 @@ IPERF_SERVER_PORT=$(ini_get_value iperf server_port)
 for dim in "${dim_bw[@]}" #loop che varia il traffico generato dal client iperf 
   do
     #chiamata a funzione di avvio del client con i parametri passati
-    start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $dim $IPERF_CLIENT_DURATA 
+    start_iperf_client $IPERF_SERVER_IP $IPERF_CLIENT_PORT $dim $IPERF_CLIENT_DURATA &
     #programma python che avvia il client di test
         python3 Client.py --server_host "$ip_server" --server_port "$port_server" --type_test "$dim" 
         wait $!
