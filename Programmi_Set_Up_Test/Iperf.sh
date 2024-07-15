@@ -12,7 +12,7 @@ start_iperf_server(){
 start_iperf_client() {
     local ip=$1
     local port=$2
-    local bitrate=$4
+    local bitrate=$3
     iperf3 -c $ip -p $port -b $bitrate &
     return $!
 }
