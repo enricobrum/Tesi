@@ -8,12 +8,13 @@ start_iperf_server(){
     iperf3 -s -B $ip -p $port &
 }
 #Funzione per l'avvio di un client IPERF passando
-# IP del server, PORT e durata in secondi della comunicazione
+# IP del server, PORT della comunicazione
 start_iperf_client() {
     local ip=$1
     local port=$2
     local bitrate=$3
-    iperf3 -c $ip -p $port -b $bitrate &
+    local durata=$4
+    iperf3 -c $ip -p $port -b $bitrate -t $durata &
     return $!
 }
 
