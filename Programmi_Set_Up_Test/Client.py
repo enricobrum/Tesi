@@ -65,8 +65,9 @@ def test_payload_inter(client_socket,file,type_test):
                 rtt_us=us1-us2+1000000
             file.write(str(rtt_us))
             file.write("\n")
-            tempo_rimanente = time.time() - tempo_avvio
-            time.sleep(intertempo-tempo_rimanente)
+            tempo_trascorso = time.time()
+            tempo_rimanente = intertempo - (tempo_trascorso - tempo_avvio)
+            time.sleep(tempo_rimanente)
           
 #Funzione principale del client
 def tcp_client(server_host,server_port,payload_size,type_test):
