@@ -25,7 +25,7 @@ PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
 #Vettore contenente gli intertempi di test
-INTERTEMPO=[0.01,0.1,1,5,10]
+INTERTEMPO=[0.01,0.1,1]
 #Funzione per connettersi al server
 def connect_to_server(host, port):
     try:
@@ -42,6 +42,7 @@ def select_test():
     print("2. Test variazione payload e intertempo + traffico Iperf")
     print("3. Test di throughput (sfruttando libreria 'ping3' python)")
     print("4. Test di latenza (sfruttando la libreria 'time' di python)")
+    print("5. Termina l'esecuzione del programma.")
     choice = input("Inserisci il numero del test: ")
     return choice
 #Funzione di test di variazione payload e intertempo
@@ -91,9 +92,12 @@ def tcp_client(server_host,server_port,payload_size,type_test):
                 continue                
             elif ntest == '4':
                 continue
+            elif ntest == '5':
+                break
             else:
                 print("Scelta non valida.")
                 continue
+    file.close()
     
 
 
