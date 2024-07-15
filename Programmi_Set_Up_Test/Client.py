@@ -4,9 +4,9 @@
 #tramite Docker delle funzioni di rete necessarie per 
 #il funzionamento dell'infrastruttura 5G privata.
 #_________________________________________________________
-from datetime import datetime
-from ping3 import ping
-import time
+from datetime import datetime #libreria per l'ottenimento dei time-stamp
+from ping3 import ping #libreria per le funzioni relative ai test di ping
+import time #libreria per la gestione dei timer
 import socket #libreria necessaria all'utilizzo dei 
               #protocolli di comunicazione
 import argparse #libreria necessaria all'utilizzo degli 
@@ -70,7 +70,7 @@ def test_payload_inter(client_socket,file,type_test):
             time.sleep(tempo_rimanente)
           
 #Funzione principale del client
-def tcp_client(server_host,server_port,payload_size,type_test):
+def tcp_client(server_host,server_port,type_test):
     client_socket = connect_to_server(server_host,server_port)
     if not client_socket:
         print("Impossibile connettersi al server. Uscita.")
@@ -100,17 +100,13 @@ def tcp_client(server_host,server_port,payload_size,type_test):
                 continue
     file.close()
     
-
-
-
 #_________________________________________________________________
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TCP Client")
     parser.add_argument('--server_host', default='127.0.0.1', help='Server host')
     parser.add_argument('--server_port', type=int, default=12345, help='Server port')
-    parser.add_argument('--payload_size', type=int, default=1024, help='Payload size in bytes')
     parser.add_argument('--type_test', default='no-traffico',help='Tipologia di test')
     args = parser.parse_args()
 
-    tcp_client(args.server_host, args.server_port, args.payload_size, args.type_test)
+    tcp_client(args.server_host, args.server_port, args.type_test)
        
