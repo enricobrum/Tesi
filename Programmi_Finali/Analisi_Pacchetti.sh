@@ -17,3 +17,4 @@ tshark -r "$PCAP_FILE" -Y "ip.src == $IP_ADDRESS || ip.dst == $IP_ADDRESS"
 .. ip.len -e frame.len -E header=y -E separator=, -E quote=d > "$OUTPUT_CSV"
 
 echo "Estrazione completata. I dati sono stati salvati in $OUTPUT_CSV"
+
