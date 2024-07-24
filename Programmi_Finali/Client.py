@@ -25,7 +25,7 @@ PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 #di test che si sta effettuando in modo da tenere conto 
 #dello scenario da cui provengono i futuri dati raccolti
 #Vettore contenente gli intertempi di test
-INTERTEMPO=[0.01,0.1,1]
+INTERTEMPO=[0.1,1,10]
 #Funzione per connettersi al server
 def connect_to_server(host, port):
     try:
