@@ -39,10 +39,9 @@ def connect_to_server(host, port):
 def select_test():
     print("Seleziona il test da eseguire:")
     print("1. Test variazione payload e intertempo")
-    print("2. Test variazione payload e intertempo + traffico Iperf")
-    print("3. Test di throughput (sfruttando libreria 'ping3' python)")
-    print("4. Test di latenza (sfruttando la libreria 'time' di python)")
-    print("5. Termina l'esecuzione del programma.")
+    print("2. Test di throughput (sfruttando libreria 'ping3' python)")
+    print("3. Test di latenza (sfruttando la libreria 'time' di python)")
+    print("4. Termina l'esecuzione del programma.")
     choice = input("Inserisci il numero del test: ")
     return choice
 #Funzione di test di variazione payload e intertempo
@@ -92,8 +91,6 @@ def tcp_client(server_host,server_port,type_test):
             elif ntest == '3':
                 continue                
             elif ntest == '4':
-                continue
-            elif ntest == '5':
                 break
             else:
                 print("Scelta non valida.")
