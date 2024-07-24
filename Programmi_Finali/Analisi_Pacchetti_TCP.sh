@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Verifica che siano stati passati i parametri necessari
-if [ "$#" -ne 3 ]; then
-    echo "Uso: $0 <file.pcapng> <indirizzo IP> <output.csv>"
-    exit 1
-fi
 
 # Parametri
 PCAP_FILE=$1
