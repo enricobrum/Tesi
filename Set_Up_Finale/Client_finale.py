@@ -68,7 +68,7 @@ def ping_test(host, file, traffic):
     print(f"Eseguendo ping verso {host}...")
     for _ in range(num_pings):
         file.write("ping"+','+str(traffic)+',')
-        delay = ping(host)
+        delay = ping("lo")
         if delay is not None:
             file.write(delay+'\n')
             print(f"Ping Test - RTT: {delay:.6f} s")
@@ -93,7 +93,7 @@ def latency_test(client_socket, interval, file, traffic):
         response = client_socket.recv(1500)
         end_time = time.time()
         rtt = end_time-start_time
-        file.write(str(rrt)+'\n')
+        file.write(str(rtt)+'\n')
         print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         time.sleep(interval)
 
