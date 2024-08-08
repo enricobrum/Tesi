@@ -36,6 +36,7 @@ def ping_test_subprocess(host, file, traffic):
     num_pings=5
     print(f"Eseguendo ping verso {host} utilizzando subprocess...")
     for _ in range(num_pings):
+        file.write("ping3"+','+str(traffic)+',')
         try:
             result = subprocess.run(["ping", "-c", "1", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if result.returncode == 0:
@@ -45,6 +46,7 @@ def ping_test_subprocess(host, file, traffic):
                     if "time=" in line:
                         time_index = line.find("time=")
                         time_str = line[time_index:].split(" ")[0]
+                        file.write(time_str+'\n')
                         print(f"Ping Test - {time_str}")
             else:
                 print("Ping Test - Nessuna risposta dal server")
@@ -77,14 +79,14 @@ def echo_test(client_socket, file, traffic):
     """
     num_messages=100
     for _ in range(num_messages):
-        file.write("echo"+','+traffic+',')
+        file.write("echo"+','+str(traffic)+',')
         message = "Test message"
         start_time = time.time()
         send_precise(client_socket, message.encode())
         response = client_socket.recv(1024)
         end_time = time.time()
         rtt=end_time-start_time
-        file.write(rtt+'\n')
+        file.write(str(rtt)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
 
@@ -108,9 +110,8 @@ def latency_test(client_socket, interval, file, traffic):
         rtt = end_time-start_time
         file.write(str(rtt)+'\n')
         print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
-        time.sleep(interval)
 
-def payload_variation_test(client_socket, interval, file, traffic):
+def payload_variation_test(client_socket, file, traffic):
     """
     Esegue un test di variazione del payload inviando messaggi di dimensioni crescenti.
 
@@ -131,9 +132,8 @@ def payload_variation_test(client_socket, interval, file, traffic):
         end_time = time.time()
         rtt=start_time-end_time
         print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
-        file.write(rtt+'\n')
+        file.write(str(rtt)+'\n')
         payload_size = payload_size*2
-        time.sleep(interval)
 
 def udp_test(host, port, file, traffic):
     """
@@ -144,7 +144,7 @@ def udp_test(host, port, file, traffic):
         port (int): Porta su cui il server UDP è in ascolto.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
-    num_messages=10
+    num_messages=50
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     message = "UDP Test message"
     for _ in range(num_messages):
