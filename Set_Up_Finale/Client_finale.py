@@ -2,7 +2,7 @@ import socket
 import Utility
 import time
 import argparse
-import datetime
+from datetime import datetime
 from ping3 import ping
 PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 def connect_to_server(host, port):
@@ -92,8 +92,8 @@ def latency_test(client_socket, interval, file, traffic):
         send_precise(client_socket, message.encode())
         response = client_socket.recv(1500)
         end_time = time.time()
-        rtt=end_time-start_time
-        file.write(rrt+'\n')
+        rtt = end_time-start_time
+        file.write(str(rrt)+'\n')
         print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         time.sleep(interval)
 
