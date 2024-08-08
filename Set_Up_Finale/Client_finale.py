@@ -220,7 +220,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    payload_variation_test(client_socket, interval, file)
+                    payload_variation_test(client_socket, file, traffic)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo il test di variazione del payload")
