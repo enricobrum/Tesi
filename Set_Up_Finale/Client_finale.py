@@ -7,6 +7,7 @@ import subprocess
 from datetime import datetime
 from ping3 import ping
 PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
+
 def connect_to_server(host, port):
     """
     Crea e stabilisce una connessione TCP con il server specificato.
@@ -65,7 +66,7 @@ def send_precise(sock, data):
             raise RuntimeError("Il socket è stato chiuso dall'altro lato")
         total_sent += sent
 
-def echo_test(client_socket, interval, file, traffic):
+def echo_test(client_socket, file, traffic):
     """
     Esegue un test di echo inviando messaggi al server e ricevendo risposte.
 
@@ -74,15 +75,17 @@ def echo_test(client_socket, interval, file, traffic):
         interval (float): Intervallo di tempo tra i messaggi in secondi.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
-    num_messages=10
+    num_messages=100
     for _ in range(num_messages):
+        file.write("echo"+','+traffic+',')
         message = "Test message"
         start_time = time.time()
         send_precise(client_socket, message.encode())
         response = client_socket.recv(1024)
         end_time = time.time()
-        print(f"Echo Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
-        time.sleep(interval)
+        rtt=end_time-start_time
+        file.write(rtt+'\n')
+        print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
 
 def latency_test(client_socket, interval, file, traffic):
@@ -191,7 +194,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    echo_test(client_socket, interval, file, traffic)
+                    echo_test(client_socket, file, traffic)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo l'echo test")
