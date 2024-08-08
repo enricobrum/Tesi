@@ -2,6 +2,7 @@ import socket
 import Utility
 import time
 import argparse
+import datetime
 from ping3 import ping
 PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 def connect_to_server(host, port):
@@ -155,6 +156,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
         udp_port (int): Porta del server UDP.
         intervals (list of float): Elenco degli intervalli tra i test in secondi.
     """
+    
     data_corrente = datetime.now()
     data_stringa = data_corrente.strftime("%Y-%m-%d")
     filecsv="istanti_temporali_"+data_stringa+".csv"
