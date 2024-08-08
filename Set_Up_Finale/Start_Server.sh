@@ -12,9 +12,10 @@ chmod +x Lettura_File_Config.sh
 source Lettura_File_Config.sh #Lettura del file di configurazione contenenti
                               #i valori utilizzati per i test
 #_______________________________________________________________________________
-IP_SERVER=$(ini_get_value server ip) #indirizzo IP del server di echo
-PORT_SERVER=$(ini_get_value server port) #port in cui si pone il server di echo
+ip_server=$(ini_get_value server ip) #indirizzo IP del server di echo
+port_tcp=$(ini_get_value server port_tcp) #port in cui si pone il server di echo
+port_udp=$(ini_get_value server port_udp)
 #avvio del server con i parametri ottenuti da file di configurazione
-python3 Server_finale.py --host "$IP_SERVER" --port "$PORT_SERVER" 
+python3 Server_finale.py --host "$ip_server" --tcp_port "$port_tcp" --udp_port "$port_udp" 
 wait $!
 

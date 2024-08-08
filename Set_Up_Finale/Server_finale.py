@@ -67,9 +67,12 @@ def udp_server(host, port):
         udp_socket.close()
 
 if __name__ == "__main__":
-    host = "0.0.0.0"
-    tcp_port = 8080
-    udp_port = 8081
+    parser = argparse.ArgumentParser(description='Client TCP e UDP per il test della connessione.')
+    parser.add_argument('--server_host', type=str, required=True, help='Indirizzo IP del server')
+    parser.add_argument('--tcp_port', type=int, required=True, help='Porta del server TCP')
+    parser.add_argument('--udp_port', type=int, required=True, help='Porta del server UDP')
 
-    threading.Thread(target=tcp_server, args=(host, tcp_port)).start()
-    threading.Thread(target=udp_server, args=(host, udp_port)).start()
+    args = parser.parse_args()
+
+    threading.Thread(target=tcp_server, args=(args.server_host, args.tcp_port)).start()
+    threading.Thread(target=udp_server, args=(args.server_host, args.udp_port)).start()
