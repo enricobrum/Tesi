@@ -130,7 +130,7 @@ def payload_variation_test(client_socket, file, traffic):
         send_precise(client_socket, message.encode())
         response = client_socket.recv(1500)
         end_time = time.time()
-        rtt=start_time-end_time
+        rtt=end_time-start_time
         print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
         file.write(str(rtt)+'\n')
         payload_size = payload_size*2
