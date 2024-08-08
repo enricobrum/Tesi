@@ -124,7 +124,7 @@ def payload_variation_test(client_socket, file, traffic):
     max_payload_size=1500
     payload_size = 8  # Dimensione iniziale del payload
     while payload_size <= max_payload_size:
-        file.write(payload_size+','+str(traffic)+',')
+        file.write(str(payload_size)+','+str(traffic)+',')
         message = "X" * payload_size
         start_time = time.time()
         send_precise(client_socket, message.encode())
