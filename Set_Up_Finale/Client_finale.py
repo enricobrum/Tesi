@@ -1,8 +1,9 @@
 import socket
+import Utility
 import time
 import argparse
 from ping3 import ping
-
+PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 def connect_to_server(host, port):
     """
     Crea e stabilisce una connessione TCP con il server specificato.
@@ -34,7 +35,7 @@ def send_precise(sock, data):
             raise RuntimeError("Il socket è stato chiuso dall'altro lato")
         total_sent += sent
 
-def echo_test(client_socket, interval, num_messages=10):
+def echo_test(client_socket, interval, file, traffic):
     """
     Esegue un test di echo inviando messaggi al server e ricevendo risposte.
 
@@ -43,6 +44,7 @@ def echo_test(client_socket, interval, num_messages=10):
         interval (float): Intervallo di tempo tra i messaggi in secondi.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
+    num_messages=10
     for _ in range(num_messages):
         message = "Test message"
         start_time = time.time()
@@ -52,7 +54,7 @@ def echo_test(client_socket, interval, num_messages=10):
         print(f"Echo Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
         time.sleep(interval)
 
-def ping_test(host, num_pings=5):
+def ping_test(host, file, traffic):
     """
     Esegue un test di ping al server per misurare la latenza ICMP.
 
@@ -61,15 +63,18 @@ def ping_test(host, num_pings=5):
         num_pings (int): Numero di ping da inviare.
 
     """
+    num_pings=5
     print(f"Eseguendo ping verso {host}...")
     for _ in range(num_pings):
+        file.write("ping"+','+str(traffic)+',')
         delay = ping(host)
         if delay is not None:
+            file.write(delay+'\n')
             print(f"Ping Test - RTT: {delay:.6f} s")
         else:
             print("Ping Test - Nessuna risposta dal server")
 
-def latency_test(client_socket, interval, num_messages=10):
+def latency_test(client_socket, interval, file, traffic):
     """
     Esegue un test di latenza calcolando il tempo di andata e ritorno di un messaggio TCP.
 
@@ -78,16 +83,20 @@ def latency_test(client_socket, interval, num_messages=10):
         interval (float): Intervallo di tempo tra i messaggi in secondi.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
+    num_messages=10
     for _ in range(num_messages):
+        file.write(str(interval)+','+str(traffic)+',')
         message = "Latency Test"
         start_time = time.time()
         send_precise(client_socket, message.encode())
-        response = client_socket.recv(1024)
+        response = client_socket.recv(1500)
         end_time = time.time()
-        print(f"Latenza Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
+        rtt=end_time-start_time
+        file.write(rrt+'\n')
+        print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         time.sleep(interval)
 
-def payload_variation_test(client_socket, interval, max_payload_size=1500, step_size=100):
+def payload_variation_test(client_socket, interval, file, traffic):
     """
     Esegue un test di variazione del payload inviando messaggi di dimensioni crescenti.
 
@@ -97,18 +106,22 @@ def payload_variation_test(client_socket, interval, max_payload_size=1500, step_
         max_payload_size (int): Dimensione massima del payload in byte.
         step_size (int): Incremento della dimensione del payload ad ogni ciclo.
     """
-    payload_size = 100  # Dimensione iniziale del payload
+    max_payload_size=1500
+    payload_size = 8  # Dimensione iniziale del payload
     while payload_size <= max_payload_size:
+        file.write(payload_size+','+str(traffic)+',')
         message = "X" * payload_size
         start_time = time.time()
         send_precise(client_socket, message.encode())
-        response = client_socket.recv(2048)
+        response = client_socket.recv(1500)
         end_time = time.time()
-        print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {end_time - start_time:.6f} s, Ricevuto: {len(response)} bytes")
-        payload_size += step_size
+        rtt=start_time-end_time
+        print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
+        file.write(rtt+'\n')
+        payload_size = payload_size*2
         time.sleep(interval)
 
-def udp_test(host, port, num_messages=10):
+def udp_test(host, port, file, traffic):
     """
     Esegue un test UDP inviando pacchetti al server e ricevendo risposte.
 
@@ -117,17 +130,22 @@ def udp_test(host, port, num_messages=10):
         port (int): Porta su cui il server UDP è in ascolto.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
+    num_messages=10
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     message = "UDP Test message"
     for _ in range(num_messages):
+        file.write("UDP,"+str(traffic)+",")
         start_time = time.time()
         udp_socket.sendto(message.encode(), (host, port))
         response, _ = udp_socket.recvfrom(2048)
         end_time = time.time()
+        rtt=end_time-start_time
+        file.write(str(rtt)+'\n')
         print(f"UDP Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
+
     udp_socket.close()
 
-def run_test_cycle(host, tcp_port, udp_port, intervals):
+def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
     """
     Esegue un ciclo di test di rete per ciascun intervallo specificato.
 
@@ -137,6 +155,13 @@ def run_test_cycle(host, tcp_port, udp_port, intervals):
         udp_port (int): Porta del server UDP.
         intervals (list of float): Elenco degli intervalli tra i test in secondi.
     """
+    data_corrente = datetime.now()
+    data_stringa = data_corrente.strftime("%Y-%m-%d")
+    filecsv="istanti_temporali_"+data_stringa+".csv"
+    file=open(filecsv,"a")
+    if file.tell()==0:
+        file.write("Tipo Test,Traffico,RTT\n")
+        print("File csv creato.")
     while True:
         print("\nSeleziona un test da eseguire:")
         print("1. Echo Test")
@@ -154,14 +179,14 @@ def run_test_cycle(host, tcp_port, udp_port, intervals):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    echo_test(client_socket, interval)
+                    echo_test(client_socket, interval, file, traffic)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo l'echo test")
 
         elif scelta == '2':
             print("\nEsecuzione Ping Test:")
-            ping_test(host)
+            ping_test(host, file, traffic)
 
         elif scelta == '3':
             print("\nEsecuzione Latency Test:")
@@ -169,7 +194,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    latency_test(client_socket, interval)
+                    latency_test(client_socket, interval, file, traffic)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo il test di latenza")
@@ -180,16 +205,17 @@ def run_test_cycle(host, tcp_port, udp_port, intervals):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    payload_variation_test(client_socket, interval)
+                    payload_variation_test(client_socket, interval, file)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo il test di variazione del payload")
 
         elif scelta == '5':
             print("\nEsecuzione UDP Test:")
-            udp_test(host, udp_port)
+            udp_test(host, udp_port, file, traffic)
 
         elif scelta == '6':
+            file.close()
             print("Uscita dal programma.")
             break
 
@@ -202,7 +228,7 @@ if __name__ == "__main__":
     parser.add_argument('--tcp_port', type=int, required=True, help='Porta del server TCP')
     parser.add_argument('--udp_port', type=int, required=True, help='Porta del server UDP')
     parser.add_argument('--intervals', nargs='+', type=float, required=True, help='Intervalli di tempo tra i messaggi')
-
+    parser.add_argument('--traffic', type=str, required=True, help="Scenario di traffico del test")
     args = parser.parse_args()
 
-    run_test_cycle(args.server_host, args.tcp_port, args.udp_port, args.intervals)
+    run_test_cycle(args.server_host, args.tcp_port, args.udp_port, args.intervals, args.traffic)
