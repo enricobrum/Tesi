@@ -62,9 +62,8 @@ def ping_test(host, num_pings=5):
 
     """
     print(f"Eseguendo ping verso {host}...")
-    for i in range(num_pings):
+    for _ in range(num_pings):
         delay = ping(host)
-        i=i+1
         if delay is not None:
             print(f"Ping Test - RTT: {delay:.6f} s")
         else:
