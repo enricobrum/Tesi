@@ -2,6 +2,8 @@ import socket
 import Utility
 import time
 import argparse
+import subprocess
+
 from datetime import datetime
 from ping3 import ping
 PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
@@ -20,6 +22,33 @@ def connect_to_server(host, port):
     client_socket.connect((host, port))
     print(f"Connesso al server {host}:{port}")
     return client_socket
+
+
+def ping_test_subprocess(host, file, traffic):
+    """
+    Esegue un test di ping al server utilizzando subprocess per aggirare i problemi di permessi.
+
+    Args:
+        host (str): Indirizzo IP del server.
+        num_pings (int): Numero di ping da inviare.
+    """
+    num_pings=5
+    print(f"Eseguendo ping verso {host} utilizzando subprocess...")
+    for _ in range(num_pings):
+        try:
+            result = subprocess.run(["ping", "-c", "1", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            if result.returncode == 0:
+                # Estrarre l'RTT dall'output del ping
+                output_lines = result.stdout.split("\n")
+                for line in output_lines:
+                    if "time=" in line:
+                        time_index = line.find("time=")
+                        time_str = line[time_index:].split(" ")[0]
+                        print(f"Ping Test - {time_str}")
+            else:
+                print("Ping Test - Nessuna risposta dal server")
+        except Exception as e:
+            print(f"Errore nell'esecuzione del ping: {e}")
 
 def send_precise(sock, data):
     """
@@ -55,25 +84,6 @@ def echo_test(client_socket, interval, file, traffic):
         print(f"Echo Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
         time.sleep(interval)
 
-def ping_test(host, file, traffic):
-    """
-    Esegue un test di ping al server per misurare la latenza ICMP.
-
-    Args:
-        host (str): Indirizzo IP del server.
-        num_pings (int): Numero di ping da inviare.
-
-    """
-    num_pings=5
-    print(f"Eseguendo ping verso {host}...")
-    for _ in range(num_pings):
-        file.write("ping"+','+str(traffic)+',')
-        delay = ping("lo")
-        if delay is not None:
-            file.write(delay+'\n')
-            print(f"Ping Test - RTT: {delay:.6f} s")
-        else:
-            print("Ping Test - Nessuna risposta dal server")
 
 def latency_test(client_socket, interval, file, traffic):
     """
@@ -188,7 +198,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
 
         elif scelta == '2':
             print("\nEsecuzione Ping Test:")
-            ping_test(host, file, traffic)
+            ping_test_subprocess(host, file, traffic)
 
         elif scelta == '3':
             print("\nEsecuzione Latency Test:")
