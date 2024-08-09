@@ -27,7 +27,8 @@ def tracerout(host):
     result = subprocess.run(["traceroute", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode == 0:
         file=open("tracerouce.txt",'a')
-        file.write(outputline=result.stdout)
+        outputline=result.stdout
+        file.write(outputline)
         
 def ping_test_subprocess(host, file, traffic):
     """
