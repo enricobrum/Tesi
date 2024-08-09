@@ -1,11 +1,10 @@
 import socket
-import Utility
 import time
 import argparse
 import subprocess
-
 from datetime import datetime
 from ping3 import ping
+
 PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
 
 def connect_to_server(host, port):
@@ -24,7 +23,12 @@ def connect_to_server(host, port):
     print(f"Connesso al server {host}:{port}")
     return client_socket
 
-
+def tracerout(host):
+    result = subprocess.run(["tracerouce", host]), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if result.returncode == 0:
+        file.open("tracerouce.txt",'a')
+        file.write(outputline)
+        
 def ping_test_subprocess(host, file, traffic):
     """
     Esegue un test di ping al server utilizzando subprocess per aggirare i problemi di permessi.
@@ -90,7 +94,7 @@ def echo_test(client_socket, file, traffic):
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
 
-def latency_test(client_socket, INTERVAL, file, traffic):
+def latency_test(client_socket, interval, file, traffic):
     """
     Esegue un test di latenza calcolando il tempo di andata e ritorno di un messaggio TCP.
 
@@ -99,12 +103,11 @@ def latency_test(client_socket, INTERVAL, file, traffic):
         interval (float): Intervallo di tempo tra i messaggi in secondi.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
-    INTERVAL_1=INTERVAL.split(" ")
-    print(INTERVAL_1)
+    interval_list=interval.split(" ")
     num_messages=10
-    for interval in INTERVAL_1:
+    for inter in interval_list:
         for _ in range(num_messages):
-            file.write("Intervallo: "+str(interval)+' s,'+str(traffic)+',')
+            file.write("Intervallo: "+str(inter)+' s,'+str(traffic)+',')
             message = "Latency Test"
             start_time = time.time()
             send_precise(client_socket, message.encode())
@@ -113,9 +116,9 @@ def latency_test(client_socket, INTERVAL, file, traffic):
             rtt = end_time-start_time
             file.write(str(rtt)+'\n')
             print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
-            interval_float=float(interval)
-            if interval_float-rtt >= 0:
-                time.sleep(interval_float-rtt)
+            inter_float=float(inter)
+            if inter_float-rtt >= 0:
+                time.sleep(inter_float-rtt)
 
 def payload_variation_test(client_socket, file, traffic):
     """
@@ -188,7 +191,8 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
         print("3. Latency Test")
         print("4. Payload Variation Test")
         print("5. UDP Test")
-        print("6. Esci")
+        print(f"6. Traceroute verso {host}")
+        print("7. Esci")
 
         scelta = input("Inserisci il numero del test da eseguire: ")
 
@@ -232,8 +236,10 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
         elif scelta == '5':
             print("\nEsecuzione UDP Test:")
             udp_test(host, udp_port, file, traffic)
-
         elif scelta == '6':
+            print(f"\nEsecuzione del comando traceroute verso {host}")
+            tracerout(host)
+        elif scelta == '7':
             file.close()
             print("Uscita dal programma.")
             break
