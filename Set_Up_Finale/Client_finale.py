@@ -99,9 +99,10 @@ def latency_test(client_socket, INTERVAL, file, traffic):
         interval (float): Intervallo di tempo tra i messaggi in secondi.
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
-    INTERVAL=INTERVAL.split()
+    INTERVAL_1=INTERVAL.split(" ")
+    print(INTERVAL_1)
     num_messages=10
-    for interval in INTERVAL:
+    for interval in INTERVAL_1:
         for _ in range(num_messages):
             file.write("Intervallo: "+str(interval)+' s,'+str(traffic)+',')
             message = "Latency Test"
