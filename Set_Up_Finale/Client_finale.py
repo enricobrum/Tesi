@@ -24,7 +24,7 @@ def connect_to_server(host, port):
     return client_socket
 
 def tracerout(host):
-    result = subprocess.run(["tracerouce", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result = subprocess.run(["traceroute", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode == 0:
         file=open("tracerouce.txt",'a')
         file.write(outputline=result.stout)
