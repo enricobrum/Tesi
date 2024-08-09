@@ -123,19 +123,17 @@ def payload_variation_test(client_socket, file, traffic):
         max_payload_size (int): Dimensione massima del payload in byte.
         step_size (int): Incremento della dimensione del payload ad ogni ciclo.
     """
-    max_payload_size=1500
-    payload_size = 8  # Dimensione iniziale del payload
-    while payload_size <= max_payload_size:
-        file.write("Dim payload: "+str(payload_size)+','+str(traffic)+',')
-        message = "X" * payload_size
-        start_time = time.time()
-        send_precise(client_socket, message.encode())
-        response = client_socket.recv(1500)
-        end_time = time.time()
-        rtt=end_time-start_time
-        print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
-        file.write(str(rtt)+'\n')
-        payload_size = payload_size*2
+    for _ in range(50):
+        for payload_size in PAYLOAD:
+            file.write("Dim payload: "+str(payload_size)+','+str(traffic)+',')
+            message = "X" * payload_size
+            start_time = time.time()
+            send_precise(client_socket, message.encode())
+            response = client_socket.recv(1500)
+            end_time = time.time()
+            rtt=end_time-start_time
+            print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
+            file.write(str(rtt)+'\n')
 
 def udp_test(host, port, file, traffic):
     """
