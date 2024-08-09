@@ -90,7 +90,7 @@ def echo_test(client_socket, file, traffic):
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
 
-def latency_test(client_socket, interval, file, traffic):
+def latency_test(client_socket, INTERVAL, file, traffic):
     """
     Esegue un test di latenza calcolando il tempo di andata e ritorno di un messaggio TCP.
 
@@ -100,18 +100,19 @@ def latency_test(client_socket, interval, file, traffic):
         num_messages (int): Numero di messaggi da inviare nel ciclo.
     """
     num_messages=10
-    for _ in range(num_messages):
-        file.write("Intervallo: "+str(interval)+' s,'+str(traffic)+',')
-        message = "Latency Test"
-        start_time = time.time()
-        send_precise(client_socket, message.encode())
-        response = client_socket.recv(1500)
-        end_time = time.time()
-        rtt = end_time-start_time
-        file.write(str(rtt)+'\n')
-        print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
-        if interval-rtt >= 0:
-            time.sleep(interval-rtt)
+    for interval in INTERVAL:
+        for _ in range(num_messages):
+            file.write("Intervallo: "+str(interval)+' s,'+str(traffic)+',')
+            message = "Latency Test"
+            start_time = time.time()
+            send_precise(client_socket, message.encode())
+            response = client_socket.recv(1500)
+            end_time = time.time()
+            rtt = end_time-start_time
+            file.write(str(rtt)+'\n')
+            print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
+            if interval-rtt >= 0:
+                time.sleep(interval-rtt)
 
 def payload_variation_test(client_socket, file, traffic):
     """
