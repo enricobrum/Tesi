@@ -113,8 +113,9 @@ def latency_test(client_socket, INTERVAL, file, traffic):
             rtt = end_time-start_time
             file.write(str(rtt)+'\n')
             print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
-            if interval-rtt >= 0:
-                time.sleep(interval-rtt)
+            interval_float=float(interval)
+            if interval_float-rtt >= 0:
+                time.sleep(interval_float-rtt)
 
 def payload_variation_test(client_socket, file, traffic):
     """
