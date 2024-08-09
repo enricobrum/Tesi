@@ -101,7 +101,7 @@ def latency_test(client_socket, interval, file, traffic):
     """
     num_messages=10
     for _ in range(num_messages):
-        file.write(str(interval)+','+str(traffic)+',')
+        file.write("Intervallo: "+str(interval)+' s,'+str(traffic)+',')
         message = "Latency Test"
         start_time = time.time()
         send_precise(client_socket, message.encode())
@@ -110,6 +110,8 @@ def latency_test(client_socket, interval, file, traffic):
         rtt = end_time-start_time
         file.write(str(rtt)+'\n')
         print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
+        if interval-rtt >= 0:
+            time.wait(interval-rtt)
 
 def payload_variation_test(client_socket, file, traffic):
     """
@@ -124,7 +126,7 @@ def payload_variation_test(client_socket, file, traffic):
     max_payload_size=1500
     payload_size = 8  # Dimensione iniziale del payload
     while payload_size <= max_payload_size:
-        file.write(str(payload_size)+','+str(traffic)+',')
+        file.write("Dim payload: "+str(payload_size)+','+str(traffic)+',')
         message = "X" * payload_size
         start_time = time.time()
         send_precise(client_socket, message.encode())
