@@ -149,6 +149,7 @@ def payload_variation_test(client_socket, file, traffic, payload):
         traffic (str): scenario di traffico del test corrente 
         payload (list of str): dimensioni del payload
     """
+    
     for _ in range(50):
         for payload_size in payload:
             payload_size_float=float(payload_size)
@@ -241,6 +242,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
 
         elif scelta == '3':
             print("\nEsecuzione Latency Test:")
+            client_socket = connect_to_server(host, tcp_port)
             try:
                 latency_interval_test(client_socket, interval, file, traffic)
             finally:
