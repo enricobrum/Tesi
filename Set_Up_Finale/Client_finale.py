@@ -139,7 +139,7 @@ def latency_interval_test(client_socket, interval, file, traffic):
 #Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente dopo aver
 #ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il valore RTT 
 #oggetto di questo test.
-def payload_variation_test(client_socket, file, traffic):
+def payload_variation_test(client_socket, file, traffic, payload):
     """
     Esegue un test di variazione del payload inviando messaggi di dimensioni crescenti.
 
@@ -147,11 +147,14 @@ def payload_variation_test(client_socket, file, traffic):
         client_socket (socket): Socket connesso al server.
         file (File): File .csv per il salvataggio dei dati
         traffic (str): scenario di traffico del test corrente 
+        payload (list of str): dimensioni del payload
     """
+    payload_list=payload.split(" ")
     for _ in range(50):
-        for payload_size in PAYLOAD:
-            file.write("Dim payload: "+str(payload_size)+','+str(traffic)+',')
-            message = "X" * payload_size
+        for payload_size in payload_list:
+            payload_size_float=float(payload_size)
+            file.write("Dim payload: "+payload_size+','+str(traffic)+',')
+            message = "X" * payload_size_float
             rtt,response=send_recv_rtt(client_socket,message)
             print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
             file.write(str(rtt)+'\n')
@@ -193,7 +196,7 @@ def udp_test(host, port, file, traffic):
 #nuovamente l'input dall'utente.
 #Il programma termina quando l'utente manda come input la scelta numero 7 che chiude il file .csv di salvataggio dei
 #dati e termina l'esecuzione.
-def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
+def run_test_cycle(host, tcp_port, udp_port, intervals, traffic, payload):
     """
     Esegue un ciclo di test di rete per ciascun intervallo specificato.
 
@@ -245,7 +248,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    latency_test(client_socket, interval, file, traffic)
+                    latency_interval_test(client_socket, interval, file, traffic)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo il test di latenza")
@@ -256,7 +259,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
                 print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
                 client_socket = connect_to_server(host, tcp_port)
                 try:
-                    payload_variation_test(client_socket, file, traffic)
+                    payload_variation_test(client_socket, file, traffic, payload)
                 finally:
                     client_socket.close()
                     print("Connessione al server chiusa dopo il test di variazione del payload")
@@ -286,6 +289,7 @@ if __name__ == "__main__":
         udp_port: Porta del server UDP
         intervals: Intervalli di tempo tra i messaggi
         traffic: Scenario di traffico del test
+        payload: Dimensioni crescenti del payload per test
     
     """
     parser = argparse.ArgumentParser(description='Client TCP e UDP per il test della connessione.')
@@ -294,6 +298,7 @@ if __name__ == "__main__":
     parser.add_argument('--udp_port', type=int, required=True, help='Porta del server UDP')
     parser.add_argument('--intervals', nargs='+', required=True, help='Intervalli di tempo tra i messaggi')
     parser.add_argument('--traffic', type=str, required=True, help="Scenario di traffico del test")
+    parser.add_argument('--payload', nargs='+', required=True, help='Dimensioni di payload')
     args = parser.parse_args()
 
-    run_test_cycle(args.server_host, args.tcp_port, args.udp_port, args.intervals, args.traffic)
+    run_test_cycle(args.server_host, args.tcp_port, args.udp_port, args.intervals, args.traffic, args.payload)
