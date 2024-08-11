@@ -149,9 +149,8 @@ def payload_variation_test(client_socket, file, traffic, payload):
         traffic (str): scenario di traffico del test corrente 
         payload (list of str): dimensioni del payload
     """
-    payload_list=payload.split(" ")
     for _ in range(50):
-        for payload_size in payload_list:
+        for payload_size in payload:
             payload_size_float=float(payload_size)
             file.write("Dim payload: "+payload_size+','+str(traffic)+',')
             message = "X" * payload_size_float
