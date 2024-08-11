@@ -2,6 +2,7 @@ import socket
 import threading
 import argparse
 
+#Funzione per la gestione della connessione TCP
 def handle_tcp_connection(client_socket, client_address):
     """
     Gestisce una connessione TCP con il client.
@@ -22,7 +23,9 @@ def handle_tcp_connection(client_socket, client_address):
     finally:
         client_socket.close()
         print(f"Connessione TCP chiusa con: {client_address}")
-
+        
+#Funzione per l'avvio del server TCP sull'indirizzo IP e porta passati come 
+#argomenti, rispettivamente, host e port
 def tcp_server(host, port):
     """
     Avvia un server TCP.
@@ -45,6 +48,8 @@ def tcp_server(host, port):
     finally:
         server_socket.close()
 
+#Funzione per l'avvio del server UDP sull'indirizzo IP e porta passati come 
+#argomenti, rispettivamente, host e port
 def udp_server(host, port):
     """
     Avvia un server UDP.

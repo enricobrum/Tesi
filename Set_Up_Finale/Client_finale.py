@@ -70,7 +70,7 @@ def ping_test_subprocess(host, file, traffic):
         except Exception as e:
             print(f"Errore nell'esecuzione del ping: {e}")
             
-#Funzione di invio dei pacchetti in maniera più precisa controllando che vengano effettivamente
+#Funzione di invio dei pacchetti in maniera piu' precisa controllando che vengano effettivamente
 #mandati tutti i pacchetti passati tramite l'argomento "data"
 def send_precise(sock, data):
     """
@@ -86,6 +86,7 @@ def send_precise(sock, data):
         if sent == 0:
             raise RuntimeError("Il socket e' stato chiuso dall'altro lato")
         total_sent += sent
+
 #Funzione di test echo che invia il messaggio "Messaggio di test" e attende la risposta da parte
 #del server. Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente
 #dopo aver ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il 
@@ -136,7 +137,8 @@ def latency_interval_test(client_socket, interval, file, traffic):
             inter_float=float(inter)
             if inter_float-rtt >= 0:
                 time.sleep(inter_float-rtt)
-#Funziozio di test che permette l'invio di messaggi TCP con dimensioni del payload crescenti.
+                
+#Funzione di test che permette l'invio di messaggi TCP con dimensioni del payload crescenti.
 #Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente dopo aver
 #ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il valore RTT 
 #oggetto di questo test.
@@ -160,7 +162,8 @@ def payload_variation_test(client_socket, file, traffic, payload):
             rtt,response=send_recv_rtt(client_socket,message)
             print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
             file.write(str(rtt)+'\n')
-#Funziozio di test che permette l'invio di messaggi UDP. Tale funzione avvia un timer esattamente 
+            
+#Funzione di test che permette l'invio di messaggi UDP. Tale funzione avvia un timer esattamente 
 #prima dell'invio e lo arresta esattamente dopo aver ricevuto il messaggio. La differenza tra "end_time"
 #e "start_time" costituisce il valore RTT oggetto di questo test.
 def udp_test(host, port, file, traffic):
