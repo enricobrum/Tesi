@@ -123,7 +123,7 @@ def latency_interval_test(client_socket, interval, file, traffic):
         file (File): File .csv per il salvataggio dei dati
         traffic (str): scenario di traffico del test corrente 
     """
-    interval_list=interval.split(" ")
+    interval_list=interval[0].split(" ")
     num_messages=30
     for inter in interval_list:
         for _ in range(num_messages):
@@ -149,9 +149,9 @@ def payload_variation_test(client_socket, file, traffic, payload):
         traffic (str): scenario di traffico del test corrente 
         payload (list of str): dimensioni del payload
     """
-    
+    payload_list=payload[0].split(" ")
     for _ in range(50):
-        for payload_size in payload:
+        for payload_size in payload_list:
             payload_size_float=float(payload_size)
             file.write("Dim payload: "+payload_size+','+str(traffic)+',')
             message = "X" * payload_size_float
