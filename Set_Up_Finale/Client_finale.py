@@ -196,7 +196,7 @@ def udp_test(host, port, file, traffic):
 #nuovamente l'input dall'utente.
 #Il programma termina quando l'utente manda come input la scelta numero 7 che chiude il file .csv di salvataggio dei
 #dati e termina l'esecuzione.
-def run_test_cycle(host, tcp_port, udp_port, intervals, traffic, payload):
+def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
     """
     Esegue un ciclo di test di rete per ciascun intervallo specificato.
 
@@ -229,14 +229,12 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic, payload):
 
         if scelta == '1':
             print("\nEsecuzione Echo Test:")
-            for interval in intervals:
-                print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
-                client_socket = connect_to_server(host, tcp_port)
-                try:
-                    echo_test(client_socket, file, traffic)
-                finally:
-                    client_socket.close()
-                    print("Connessione al server chiusa dopo l'echo test")
+            client_socket = connect_to_server(host, tcp_port)
+            try:
+                echo_test(client_socket, file, traffic)
+            finally:
+                client_socket.close()
+                print("Connessione al server chiusa dopo l'echo test")
 
         elif scelta == '2':
             print("\nEsecuzione Ping Test:")
@@ -244,25 +242,20 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic, payload):
 
         elif scelta == '3':
             print("\nEsecuzione Latency Test:")
-            for interval in intervals:
-                print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
-                client_socket = connect_to_server(host, tcp_port)
-                try:
-                    latency_interval_test(client_socket, interval, file, traffic)
-                finally:
-                    client_socket.close()
-                    print("Connessione al server chiusa dopo il test di latenza")
+            try:
+                latency_interval_test(client_socket, interval, file, traffic)
+            finally:
+                client_socket.close()
+                print("Connessione al server chiusa dopo il test di latenza")
 
         elif scelta == '4':
             print("\nEsecuzione Payload Variation Test:")
-            for interval in intervals:
-                print(f"\nAvvio del ciclo di test con intervallo: {interval} secondi")
-                client_socket = connect_to_server(host, tcp_port)
-                try:
-                    payload_variation_test(client_socket, file, traffic, payload)
-                finally:
-                    client_socket.close()
-                    print("Connessione al server chiusa dopo il test di variazione del payload")
+            client_socket = connect_to_server(host, tcp_port)
+            try:
+                payload_variation_test(client_socket, file, traffic, payload)
+            finally:
+                client_socket.close()
+                print("Connessione al server chiusa dopo il test di variazione del payload")
 
         elif scelta == '5':
             print("\nEsecuzione UDP Test:")
@@ -296,7 +289,7 @@ if __name__ == "__main__":
     parser.add_argument('--server_host', type=str, required=True, help='Indirizzo IP del server')
     parser.add_argument('--tcp_port', type=int, required=True, help='Porta del server TCP')
     parser.add_argument('--udp_port', type=int, required=True, help='Porta del server UDP')
-    parser.add_argument('--intervals', nargs='+', required=True, help='Intervalli di tempo tra i messaggi')
+    parser.add_argument('--interval', nargs='+', required=True, help='Intervalli di tempo tra i messaggi')
     parser.add_argument('--traffic', type=str, required=True, help="Scenario di traffico del test")
     parser.add_argument('--payload', nargs='+', required=True, help='Dimensioni di payload')
     args = parser.parse_args()
