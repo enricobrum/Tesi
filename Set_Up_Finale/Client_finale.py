@@ -3,17 +3,25 @@ import time
 import argparse
 import subprocess
 from datetime import datetime
-from ping3 import ping
 
-PAYLOAD=[8,16,32,64,128,256,512,1024,1500]
+#Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
+#il calcolo del relativo Round Trip Time. 
+def send_recv_rtt(client_socket,message):
+    start_time = time.time()
+    send_precise(client_socket, message.encode())
+    response = client_socket.recv(1500)
+    end_time = time.time()
+    rtt=end_time-start_time
+    return rtt,response
 
+#Funzione per la connessione TCP con il server
 def connect_to_server(host, port):
     """
     Crea e stabilisce una connessione TCP con il server specificato.
 
     Args:
         host (str): Indirizzo IP del server.
-        port (int): Porta su cui il server è in ascolto.
+        port (int): Porta su cui il server e' in ascolto.
 
     Returns:
         socket: Oggetto socket connesso al server.
@@ -23,6 +31,7 @@ def connect_to_server(host, port):
     print(f"Connesso al server {host}:{port}")
     return client_socket
 
+#Funzione di test utilizzando il comando "traceroute"
 def tracerout(host):
     result = subprocess.run(["traceroute", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode == 0:
@@ -30,18 +39,20 @@ def tracerout(host):
         outputline=result.stdout
         file.write(outputline)
         
+#Funzione di test utilizzando il comando "ping"
 def ping_test_subprocess(host, file, traffic):
     """
     Esegue un test di ping al server utilizzando subprocess per aggirare i problemi di permessi.
 
     Args:
         host (str): Indirizzo IP del server.
-        num_pings (int): Numero di ping da inviare.
+        file (File): File .csv per il salvataggio dei dati
+        traffic (str): scenario di traffico del test corrente 
     """
-    num_pings=5
+    num_pings=50
     print(f"Eseguendo ping verso {host} utilizzando subprocess...")
     for _ in range(num_pings):
-        file.write("ping3"+','+str(traffic)+',')
+        file.write("ping"+','+str(traffic)+',')
         try:
             result = subprocess.run(["ping", "-c", "1", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if result.returncode == 0:
@@ -51,13 +62,16 @@ def ping_test_subprocess(host, file, traffic):
                     if "time=" in line:
                         time_index = line.find("time=")
                         time_str = line[time_index:].split(" ")[0]
-                        file.write(time_str+'\n')
+                        time=time_str.removesuffix("time=")
+                        file.write(time+'\n')
                         print(f"Ping Test - {time_str}")
             else:
                 print("Ping Test - Nessuna risposta dal server")
         except Exception as e:
             print(f"Errore nell'esecuzione del ping: {e}")
-
+            
+#Funzione di invio dei pacchetti in maniera più precisa controllando che vengano effettivamente
+#mandati tutti i pacchetti passati tramite l'argomento "data"
 def send_precise(sock, data):
     """
     Invia i dati attraverso il socket in modo preciso, assicurando l'invio completo.
@@ -70,9 +84,12 @@ def send_precise(sock, data):
     while total_sent < len(data):
         sent = sock.send(data[total_sent:])
         if sent == 0:
-            raise RuntimeError("Il socket è stato chiuso dall'altro lato")
+            raise RuntimeError("Il socket e' stato chiuso dall'altro lato")
         total_sent += sent
-
+#Funzione di test echo che invia il messaggio "Messaggio di test" e attende la risposta da parte
+#del server. Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente
+#dopo aver ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il 
+#valore RTT oggetto di questo test.
 def echo_test(client_socket, file, traffic):
     """
     Esegue un test di echo inviando messaggi al server e ricevendo risposte.
@@ -80,81 +97,80 @@ def echo_test(client_socket, file, traffic):
     Args:
         client_socket (socket): Socket connesso al server.
         interval (float): Intervallo di tempo tra i messaggi in secondi.
-        num_messages (int): Numero di messaggi da inviare nel ciclo.
+        file (File): File .csv per il salvataggio dei dati
+        traffic (str): scenario di traffico del test corrente 
     """
     num_messages=100
     for _ in range(num_messages):
         file.write("echo"+','+str(traffic)+',')
-        message = "Test message"
-        start_time = time.time()
-        send_precise(client_socket, message.encode())
-        response = client_socket.recv(1024)
-        end_time = time.time()
-        rtt=end_time-start_time
+        message = "Messaggio di test"
+        rtt,response=send_recv_rtt(client_socket,message)
         file.write(str(rtt)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
-
-def latency_test(client_socket, interval, file, traffic):
+#Funziozio di test che permette l'invio di messaggi TCP ad invervalli regolari, definiti
+#attraverso l'array "interval" passato come argomento. Tale funzione avvia un timer esattamente 
+#prima dell'invio e lo arresta esattamente dopo aver ricevuto il messaggio. La differenza tra 
+#"end_time" e "start_time" costituisce il valore RTT oggetto di questo test.
+def latency_interval_test(client_socket, interval, file, traffic):
     """
-    Esegue un test di latenza calcolando il tempo di andata e ritorno di un messaggio TCP.
+    Esegue un test di latenza calcolando il tempo di andata e ritorno di un messaggio TCP
+    mandando messaggi ad intervalli regolari.
 
     Args:
         client_socket (socket): Socket connesso al server.
-        interval (float): Intervallo di tempo tra i messaggi in secondi.
-        num_messages (int): Numero di messaggi da inviare nel ciclo.
+        interval array(str): Intervallo di tempo tra i messaggi in secondi.
+        file (File): File .csv per il salvataggio dei dati
+        traffic (str): scenario di traffico del test corrente 
     """
     interval_list=interval.split(" ")
-    num_messages=10
+    num_messages=30
     for inter in interval_list:
         for _ in range(num_messages):
             file.write("Intervallo: "+str(inter)+' s,'+str(traffic)+',')
             message = "Latency Test"
-            start_time = time.time()
-            send_precise(client_socket, message.encode())
-            response = client_socket.recv(1500)
-            end_time = time.time()
-            rtt = end_time-start_time
+            rtt,response=send_recv_rtt(client_socket,message)
             file.write(str(rtt)+'\n')
             print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
             inter_float=float(inter)
             if inter_float-rtt >= 0:
                 time.sleep(inter_float-rtt)
-
+#Funziozio di test che permette l'invio di messaggi TCP con dimensioni del payload crescenti.
+#Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente dopo aver
+#ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il valore RTT 
+#oggetto di questo test.
 def payload_variation_test(client_socket, file, traffic):
     """
     Esegue un test di variazione del payload inviando messaggi di dimensioni crescenti.
 
     Args:
         client_socket (socket): Socket connesso al server.
-        interval (float): Intervallo di tempo tra i messaggi in secondi.
-        max_payload_size (int): Dimensione massima del payload in byte.
-        step_size (int): Incremento della dimensione del payload ad ogni ciclo.
+        file (File): File .csv per il salvataggio dei dati
+        traffic (str): scenario di traffico del test corrente 
     """
     for _ in range(50):
         for payload_size in PAYLOAD:
             file.write("Dim payload: "+str(payload_size)+','+str(traffic)+',')
             message = "X" * payload_size
-            start_time = time.time()
-            send_precise(client_socket, message.encode())
-            response = client_socket.recv(1500)
-            end_time = time.time()
-            rtt=end_time-start_time
+            rtt,response=send_recv_rtt(client_socket,message)
             print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
             file.write(str(rtt)+'\n')
-
+#Funziozio di test che permette l'invio di messaggi UDP. Tale funzione avvia un timer esattamente 
+#prima dell'invio e lo arresta esattamente dopo aver ricevuto il messaggio. La differenza tra "end_time"
+#e "start_time" costituisce il valore RTT oggetto di questo test.
 def udp_test(host, port, file, traffic):
     """
     Esegue un test UDP inviando pacchetti al server e ricevendo risposte.
 
     Args:
         host (str): Indirizzo IP del server.
-        port (int): Porta su cui il server UDP è in ascolto.
-        num_messages (int): Numero di messaggi da inviare nel ciclo.
+        port (int): Porta su cui il server UDP e' in ascolto.
+        file (File): File .csv per il salvataggio dei dati
+        traffic (str): scenario di traffico del test corrente 
     """
     num_messages=50
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    message = "UDP Test message"
+    message = "Messaggio di test UDP"
     for _ in range(num_messages):
         file.write("UDP,"+str(traffic)+",")
         start_time = time.time()
@@ -163,10 +179,20 @@ def udp_test(host, port, file, traffic):
         end_time = time.time()
         rtt=end_time-start_time
         file.write(str(rtt)+'\n')
-        print(f"UDP Test - RTT: {end_time - start_time:.6f} s, Ricevuto: {response.decode()}")
+        print(f"UDP Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
     udp_socket.close()
 
+#Funzio principale di scelta della tipologia di test. All'avvio tale funzione apre un file che
+#avra il nome: "istanti_temporali_"+data del giorno espressa come ANNO-MESE-GIORNO+".csv". Se il file risulta
+#vuoto, allora scrive l'intestazione necessaria alla suddivisione del file csv. Nel caso contrario, procede alla
+#selezione di test in cui si pone in attesa che l'utente fornisca un numero da 1 a 6 tramite l'input da tastiera.
+#Alla fine di ogni test, per evitare problemi, la connessione verso il server viene interrotta, in modo da poterla
+#ristabilire all'inizio di un nuovo test. Infatti, essendo la selezione all'interno di un "while TRUE:", al termine
+#di un test, dopo aver chiuso le connessioni, il programma si riporta nello stato di selezione del test attendendo
+#nuovamente l'input dall'utente.
+#Il programma termina quando l'utente manda come input la scelta numero 7 che chiude il file .csv di salvataggio dei
+#dati e termina l'esecuzione.
 def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
     """
     Esegue un ciclo di test di rete per ciascun intervallo specificato.
@@ -176,6 +202,7 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
         tcp_port (int): Porta del server TCP.
         udp_port (int): Porta del server UDP.
         intervals (list of float): Elenco degli intervalli tra i test in secondi.
+        traffic (str): Scenario di traffico del test corrente
     """
     
     data_corrente = datetime.now()
@@ -247,8 +274,20 @@ def run_test_cycle(host, tcp_port, udp_port, intervals, traffic):
 
         else:
             print("Selezione non valida. Per favore, riprova.")
-
+            
+#Funzione principale che all'avvio del programma tramite l'oggetto "parser" consente di eseguire il codice
+#specificando gli argomenti necessari alla realizzazione del test. Dopo aver aggiunto tutti gli argomenti
+#passati al lancio del programma python, viene eseguita la funzione "run_test_cycle" e si entra nella fase
+#di test. 
 if __name__ == "__main__":
+    """
+        server_host: Indirizzo IP del server
+        tcp_port: Porta del server TCP
+        udp_port: Porta del server UDP
+        intervals: Intervalli di tempo tra i messaggi
+        traffic: Scenario di traffico del test
+    
+    """
     parser = argparse.ArgumentParser(description='Client TCP e UDP per il test della connessione.')
     parser.add_argument('--server_host', type=str, required=True, help='Indirizzo IP del server')
     parser.add_argument('--tcp_port', type=int, required=True, help='Porta del server TCP')
