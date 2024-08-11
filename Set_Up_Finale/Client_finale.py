@@ -124,6 +124,7 @@ def latency_interval_test(client_socket, interval, file, traffic):
         traffic (str): scenario di traffico del test corrente 
     """
     interval_list=interval[0].split(" ")
+    print(interval_list)
     num_messages=30
     for inter in interval_list:
         for _ in range(num_messages):
@@ -150,6 +151,7 @@ def payload_variation_test(client_socket, file, traffic, payload):
         payload (list of str): dimensioni del payload
     """
     payload_list=payload[0].split(" ")
+    print(payload_list)
     for _ in range(50):
         for payload_size in payload_list:
             payload_size_float=float(payload_size)
