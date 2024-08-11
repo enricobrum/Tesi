@@ -21,15 +21,15 @@ def handle_tcp_connection(client_socket, client_address):
         print(f"Errore nella connessione TCP: {e}")
     finally:
         client_socket.close()
-        print(f"TCP Connection closed with {client_address}")
+        print(f"Connessione TCP chiusa con: {client_address}")
 
 def tcp_server(host, port):
     """
     Avvia un server TCP.
 
     Args:
-        host (str): Indirizzo IP su cui il server è in ascolto.
-        port (int): Porta su cui il server è in ascolto.
+        host (str): Indirizzo IP su cui il server e' in ascolto.
+        port (int): Porta su cui il server e' in ascolto.
     """
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
@@ -50,8 +50,8 @@ def udp_server(host, port):
     Avvia un server UDP.
 
     Args:
-        host (str): Indirizzo IP su cui il server è in ascolto.
-        port (int): Porta su cui il server è in ascolto.
+        host (str): Indirizzo IP su cui il server e' in ascolto.
+        port (int): Porta su cui il server e' in ascolto.
     """
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     udp_socket.bind((host, port))
