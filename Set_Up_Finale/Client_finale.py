@@ -62,7 +62,7 @@ def ping_test_subprocess(host, file, traffic):
                     if "time=" in line:
                         time_index = line.find("time=")
                         time_str = line[time_index:].split(" ")[0]
-                        time=time_str.removesuffix("time=")
+                        time=time_str.split("time=")[1]
                         file.write(time+'\n')
                         print(f"Ping Test - {time_str}")
             else:
