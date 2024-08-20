@@ -31,13 +31,6 @@ def connect_to_server(host, port):
     print(f"Connesso al server {host}:{port}")
     return client_socket
 
-#Funzione di test utilizzando il comando "traceroute"
-def tracerout(host):
-    result = subprocess.run(["traceroute", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    if result.returncode == 0:
-        file=open("tracerouce.txt",'a')
-        outputline=result.stdout
-        file.write(outputline)
         
 #Funzione di test utilizzando il comando "ping"
 def ping_test_subprocess(host, file, traffic):
@@ -191,7 +184,15 @@ def udp_test(host, port, file, traffic):
 
     udp_socket.close()
 
-#Funzio principale di scelta della tipologia di test. All'avvio tale funzione apre un file che
+#Funzione di test utilizzando il comando "traceroute"
+def tracerout(host):
+    result = subprocess.run(["traceroute","-n","-I", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if result.returncode == 0:
+        file=open("tracerouce.txt",'a')
+        outputline=result.stdout
+        file.write(outputline)
+        
+#Funzione principale di scelta della tipologia di test. All'avvio tale funzione apre un file che
 #avra il nome: "istanti_temporali_"+data del giorno espressa come ANNO-MESE-GIORNO+".csv". Se il file risulta
 #vuoto, allora scrive l'intestazione necessaria alla suddivisione del file csv. Nel caso contrario, procede alla
 #selezione di test in cui si pone in attesa che l'utente fornisca un numero da 1 a 6 tramite l'input da tastiera.
