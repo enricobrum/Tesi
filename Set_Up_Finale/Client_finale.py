@@ -8,7 +8,7 @@ from datetime import datetime
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message):
     start_time = time.time()
-    send_precise(client_socket, message.encode())
+    client_socket.sendall(message)
     response = client_socket.recv(65536)
     end_time = time.time()
     rtt=end_time-start_time
@@ -63,22 +63,6 @@ def ping_test_subprocess(host, file, traffic):
         except Exception as e:
             print(f"Errore nell'esecuzione del ping: {e}")
             
-#Funzione di invio dei pacchetti in maniera piu' precisa controllando che vengano effettivamente
-#mandati tutti i pacchetti passati tramite l'argomento "data"
-def send_precise(sock, data):
-    """
-    Invia i dati attraverso il socket in modo preciso, assicurando l'invio completo.
-
-    Args:
-        sock (socket): Il socket attraverso il quale inviare i dati.
-        data (bytes): I dati da inviare.
-    """
-    total_sent = 0
-    while total_sent < len(data):
-        sent = sock.send(data[total_sent:])
-        if sent == 0:
-            raise RuntimeError("Il socket e' stato chiuso dall'altro lato")
-        total_sent += sent
 
 #Funzione di test echo che invia il messaggio "Messaggio di test" e attende la risposta da parte
 #del server. Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente
