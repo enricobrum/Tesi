@@ -42,7 +42,7 @@ def ping_test_subprocess(host, file, traffic):
         file (File): File .csv per il salvataggio dei dati
         traffic (str): scenario di traffico del test corrente 
     """
-    num_pings=50
+    num_pings=100
     print(f"Eseguendo ping verso {host} utilizzando subprocess...")
     for _ in range(num_pings):
         file.write("ping"+','+str(traffic)+',')
@@ -119,7 +119,7 @@ def latency_interval_test(client_socket, interval, file, traffic):
     """
     interval_list=interval[0].split(" ")
     print(interval_list)
-    num_messages=30
+    num_messages=50
     for inter in interval_list:
         for _ in range(num_messages):
             file.write("Intervallo: "+str(inter)+' s,'+str(traffic)+',')
@@ -169,7 +169,7 @@ def udp_test(host, port, file, traffic):
         file (File): File .csv per il salvataggio dei dati
         traffic (str): scenario di traffico del test corrente 
     """
-    num_messages=50
+    num_messages=100
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     message = "Messaggio di test UDP"
     for _ in range(num_messages):
