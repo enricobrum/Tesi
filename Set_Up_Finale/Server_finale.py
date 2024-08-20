@@ -14,7 +14,7 @@ def handle_tcp_connection(client_socket, client_address):
     print(f"TCP Connection from {client_address}")
     try:
         while True:
-            data = client_socket.recv(2048)
+            data = client_socket.recv(65536)
             if not data:
                 break
             client_socket.sendall(data)
@@ -64,7 +64,7 @@ def udp_server(host, port):
 
     try:
         while True:
-            data, client_address = udp_socket.recvfrom(2048)
+            data, client_address = udp_socket.recvfrom(65536)
             print(f"Ricevuto messaggio da {client_address}: {data.decode()}")
             udp_socket.sendto(data, client_address)
     except KeyboardInterrupt:

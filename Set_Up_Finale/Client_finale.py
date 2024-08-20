@@ -9,7 +9,7 @@ from datetime import datetime
 def send_recv_rtt(client_socket,message):
     start_time = time.time()
     send_precise(client_socket, message.encode())
-    response = client_socket.recv(1500)
+    response = client_socket.recv(65536)
     end_time = time.time()
     rtt=end_time-start_time
     return rtt,response
@@ -176,7 +176,7 @@ def udp_test(host, port, file, traffic):
         file.write("UDP,"+str(traffic)+",")
         start_time = time.time()
         udp_socket.sendto(message.encode(), (host, port))
-        response, _ = udp_socket.recvfrom(2048)
+        response, _ = udp_socket.recvfrom(65536)
         end_time = time.time()
         rtt=end_time-start_time
         file.write(str(rtt)+'\n')
