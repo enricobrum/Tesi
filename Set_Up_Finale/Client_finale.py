@@ -8,7 +8,7 @@ from datetime import datetime
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message):
     start_time = time.time()
-    client_socket.sendall(message)
+    client_socket.sendall(message.encode('utf-8'))
     response = client_socket.recv(65536)
     end_time = time.time()
     rtt=end_time-start_time
