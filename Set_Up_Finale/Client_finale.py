@@ -190,6 +190,7 @@ def tracerout(host):
     if result.returncode == 0:
         file=open("tracerouce.txt",'a')
         outputline=result.stdout
+        print(outputline)
         file.write(outputline)
         
 #Funzione principale di scelta della tipologia di test. All'avvio tale funzione apre un file che
