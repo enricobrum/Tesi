@@ -186,7 +186,7 @@ def udp_test(host, port, file, traffic):
 
 #Funzione di test utilizzando il comando "traceroute"
 def tracerout(host):
-    result = subprocess.run(["sudo","traceroute","-I", "www.unibs.it"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result = subprocess.run(["sudo","traceroute","-I", host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode == 0:
         file=open("tracerouce.txt",'a')
         outputline=result.stdout
