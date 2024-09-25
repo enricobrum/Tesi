@@ -10,7 +10,7 @@ def get_ntp_time():
     #Crea istanza del client NTP
     ntp_client =ntplib.NTPClient()
     #Definizione del server NTP
-    server = 'pool.ntp.org'
+    server = 'time.google.com'
     
     try:
         response = ntp_client.request(server, version=3)
