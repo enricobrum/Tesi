@@ -31,10 +31,10 @@ def send_recv_rtt(client_socket,message):
     start_time_ntp = get_ntp_time()
     client_socket.sendall(message.encode('utf-8'))
     response = client_socket.recv(65536)
-    end_time_ntp = get_ntp_time()
     end_time = time.time()
+    end_time_ntp = get_ntp_time()
     rtt_ntp = end_time_ntp - start_time_ntp
-    rtt=end_time-start_time
+    rtt= end_time - start_time
     return rtt,rtt_ntp,response
 
 #Funzione per la connessione TCP con il server
