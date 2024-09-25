@@ -6,33 +6,18 @@ import argparse
 import subprocess
 from datetime import datetime
 
-def get_ntp_time():
-    #Crea istanza del client NTP
-    ntp_client =ntplib.NTPClient()
-    #Definizione del server NTP
-    server = 'ntp1.inrim.it'
-    
-    try:
-        response = ntp_client.request(server, version=3)
-         # Ottieni il timestamp del tempo di trasmissione (tx_time) in secondi
-        tx_time_seconds = response.tx_time
-
-        # Converte il timestamp in microsecondi
-    except Exception as e:
-        tx_time_seconds = 0
-        print(f"Errore durante la richiesta NTP: {e}")
-    return tx_time_seconds
-
 
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
-def send_recv_rtt(client_socket,message):
+def send_recv_rtt(client_socket,message,ntp_client):
     start_time = time.time()
-    start_time_ntp = get_ntp_time()
+    start_time_ntp = ntp_client.request('ntp1.inrim.it')
     client_socket.sendall(message.encode('utf-8'))
     response = client_socket.recv(65536)
     end_time = time.time()
-    end_time_ntp = get_ntp_time()
+    end_time_ntp = ntp_client.request('ntp1.inrim.it')
+    start_time_ntp = start_time_ntp.tx_time
+    end_time_ntp = end_time_ntp.tx_time
     rtt_ntp = end_time_ntp - start_time_ntp
     rtt= end_time - start_time
     return rtt,rtt_ntp,response
@@ -91,7 +76,7 @@ def ping_test_subprocess(host, file, traffic):
 #del server. Tale funzione avvia un timer esattamente prima dell'invio e lo arresta esattamente
 #dopo aver ricevuto il messaggio. La differenza tra "end_time" e "start_time" costituisce il 
 #valore RTT oggetto di questo test.
-def echo_test(client_socket, file, traffic):
+def echo_test(client_socket, file, traffic,ntp_client):
     """
     Esegue un test di echo inviando messaggi al server e ricevendo risposte.
 
@@ -105,7 +90,7 @@ def echo_test(client_socket, file, traffic):
     for _ in range(num_messages):
         file.write("echo"+','+str(traffic)+',')
         message = "Messaggio di test"
-        rtt,rtt_ntp,response=send_recv_rtt(client_socket,message)
+        rtt,rtt_ntp,response=send_recv_rtt(client_socket,message,ntp_client)
         file.write(str(rtt)+','+str(rtt_ntp)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         
@@ -221,7 +206,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
         intervals (list of float): Elenco degli intervalli tra i test in secondi.
         traffic (str): Scenario di traffico del test corrente
     """
-    
+    ntp_client =ntplib.NTPClient()
     data_corrente = datetime.now()
     data_stringa = data_corrente.strftime("%Y-%m-%d")
     filecsv="istanti_temporali_"+data_stringa+".csv"
@@ -245,7 +230,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
             print("\nEsecuzione Echo Test:")
             client_socket = connect_to_server(host, tcp_port)
             try:
-                echo_test(client_socket, file, traffic)
+                echo_test(client_socket, file, traffic,ntp_client)
             finally:
                 client_socket.close()
                 print("Connessione al server chiusa dopo l'echo test")
