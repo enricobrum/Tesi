@@ -13,7 +13,7 @@ def get_ntp_time():
     server = 'pool.ntp.org'
     
     try:
-        response = ntp_client.request(server, version=4)
+        response = ntp_client.request(server, version=3)
          # Ottieni il timestamp del tempo di trasmissione (tx_time) in secondi
         tx_time_seconds = response.tx_time
 
