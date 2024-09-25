@@ -14,19 +14,24 @@ def get_ntp_time():
     
     try:
         response = ntp_client.request(server, version=4)
+         # Ottieni il timestamp del tempo di trasmissione (tx_time) in secondi
+        tx_time_seconds = response.tx_time
+
+        # Converte il timestamp in microsecondi
+        tx_time_microseconds = int(tx_time_seconds * 1_000_000)
     except Exception as e:
         print(f"Errore durante la richiesta NTP: {e}")
-    return response
+    return tx_time_microseconds
 
 
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message):
     start_time = time.time()
-    start_time_ntp = get_ntp_time().tx_time
+    start_time_ntp = get_ntp_time()
     client_socket.sendall(message.encode('utf-8'))
     response = client_socket.recv(65536)
-    end_time_ntp = get_ntp_time().tx_time
+    end_time_ntp = get_ntp_time()
     end_time = time.time()
     rtt_ntp = start_time_ntp - end_time_ntp
     rtt=end_time-start_time
