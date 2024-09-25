@@ -18,11 +18,10 @@ def get_ntp_time():
         tx_time_seconds = response.tx_time
 
         # Converte il timestamp in microsecondi
-        tx_time_microseconds = int(tx_time_seconds * 1_000_000)
     except Exception as e:
         tx_time_microseconds = 0
         print(f"Errore durante la richiesta NTP: {e}")
-    return tx_time_microseconds
+    return tx_time_seconds
 
 
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
