@@ -109,7 +109,7 @@ def echo_test(client_socket, file, traffic):
         rtt,rtt_ntp,response=send_recv_rtt(client_socket,message)
         file.write(str(rtt)+','+str(rtt_ntp)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
-        time.sleep(0.5)
+        
 #Funziozio di test che permette l'invio di messaggi TCP ad invervalli regolari, definiti
 #attraverso l'array "interval" passato come argomento. Tale funzione avvia un timer esattamente 
 #prima dell'invio e lo arresta esattamente dopo aver ricevuto il messaggio. La differenza tra 
