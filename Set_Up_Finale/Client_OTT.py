@@ -10,9 +10,10 @@ from datetime import datetime
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message,ntp_client):
+
+    client_socket.sendall(message.encode('utf-8'))
     start_time = time.time()
     start_time_ntp = ntp_client.request('ntp1.inrim.it')
-    client_socket.sendall(message.encode('utf-8'))
     response = client_socket.recv(65536)
     end_time = time.time()
     end_time_ntp = ntp_client.request('ntp1.inrim.it')
