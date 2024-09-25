@@ -100,8 +100,8 @@ def echo_test(client_socket, file, traffic):
     for _ in range(num_messages):
         file.write("echo"+','+str(traffic)+',')
         message = "Messaggio di test"
-        rtt,response=send_recv_rtt(client_socket,message)
-        file.write(str(rtt)+'\n')
+        rtt_ntp,rtt,response=send_recv_rtt(client_socket,message)
+        file.write(str(rtt)+','+str(rtt_ntp)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
 #Funziozio di test che permette l'invio di messaggi TCP ad invervalli regolari, definiti
@@ -222,7 +222,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
     filecsv="istanti_temporali_"+data_stringa+".csv"
     file=open(filecsv,"a")
     if file.tell()==0:
-        file.write("Tipo Test,Traffico,RTT\n")
+        file.write("Tipo Test,Traffico,RTT,RTT_ntp\n")
         print("File csv creato.")
     while True:
         print("\nSeleziona un test da eseguire:")
