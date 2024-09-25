@@ -19,7 +19,7 @@ def get_ntp_time():
 
         # Converte il timestamp in microsecondi
     except Exception as e:
-        tx_time_microseconds = 0
+        tx_time_seconds = 0
         print(f"Errore durante la richiesta NTP: {e}")
     return tx_time_seconds
 
