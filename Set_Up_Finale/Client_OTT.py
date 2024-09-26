@@ -117,8 +117,8 @@ def echo_test(client_socket, file, traffic,ntp_client):
     for _ in range(num_messages):
         file.write("echo"+','+str(traffic)+',')
         message = "Messaggio di test"
-        rtt,rtt_ntp,response=send_recv_rtt(client_socket,message,ntp_client)
-        file.write(str(rtt)+','+str(rtt_ntp)+'\n')
+        rtt,response=send_recv_rtt(client_socket,message,ntp_client)
+        file.write(str(rtt)+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         
 #Funziozio di test che permette l'invio di messaggi TCP ad invervalli regolari, definiti
