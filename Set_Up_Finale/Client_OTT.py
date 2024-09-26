@@ -11,14 +11,14 @@ def get_ntp_timestamp(ntp_client):
     response = ntp_client.request(server, version=3)
     return response.tx_time  # Tempo in secondi
 
-def test_ntp(client_socket,message,ntp_client,host):
+def test_ntp(client_socket,message,ntp_client,host,port):
         # Ottieni il timestamp prima di inviare il messaggio
     client_send_timestamp = get_ntp_timestamp(ntp_client)
     print(f"Timestamp invio client (secondi): {client_send_timestamp}")
 
     # Invia il messaggio al server
     message = "Richiesta dal client"
-    client_socket.sendto(message.encode(), host)
+    client_socket.sendto(message.encode(), (host,port))
 
     # Attende la risposta del server
     data, _ = client_socket.recvfrom(1024)
@@ -295,7 +295,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
             print("Test echo con orologi da Server NTP.") 
             client_socket = connect_to_server(host, tcp_port)
             message="Richiesta dal client"
-            test_ntp(client_socket,message,ntp_client,host) 
+            test_ntp(client_socket,message,ntp_client,host,tcp_port) 
         elif scelta == '8':
             file.close()
             print("Uscita dal programma.")
