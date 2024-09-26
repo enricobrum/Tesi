@@ -33,7 +33,7 @@ def test_ntp(client_socket,message,ntp_client,host,port):
     print(f"RTT (Round Trip Time) in secondi: {rtt:.6f}")
 
     # Calcola l'OTT (One Trip Time)
-    ott = (server_timestamp - client_send_timestamp) + (client_receive_timestamp - server_timestamp) / 2
+    ott = ((server_timestamp - client_send_timestamp) + (client_receive_timestamp - server_timestamp)) / 2
     print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
 
     return 
