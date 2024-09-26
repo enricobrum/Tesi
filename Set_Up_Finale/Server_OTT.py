@@ -21,15 +21,15 @@ def handle_tcp_connection(server_socket, client_address,ntp_client):
     try:
         while True:
             data, addr = server_socket.recvfrom(1024)
+            if data != 0:
+                # Ottieni il timestamp NTP attuale
+                server_timestamp = get_ntp_timestamp(ntp_client)
 
-            # Ottieni il timestamp NTP attuale
-            server_timestamp = get_ntp_timestamp(ntp_client)
+                print(f"Ricevuto: {data.decode()}")
+                print(f"Timestamp server (secondi): {server_timestamp}")
 
-            print(f"Ricevuto: {data.decode()}")
-            print(f"Timestamp server (secondi): {server_timestamp}")
-
-            # Risponde al client con il timestamp del server
-            server_socket.sendto(str(server_timestamp).encode(), client_address)
+                # Risponde al client con il timestamp del server
+                server_socket.sendto(str(server_timestamp).encode(), client_address)
     except Exception as e:
         print(f"Errore nella connessione TCP: {e}")
     finally:
