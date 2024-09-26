@@ -293,6 +293,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
             tracerout(host)
         elif scelta == '7':
             print("Test echo con orologi da Server NTP.") 
+            client_socket = connect_to_server(host, tcp_port)
             message="Richiesta dal client"
             test_ntp(client_socket,message,ntp_client,host) 
         elif scelta == '8':
