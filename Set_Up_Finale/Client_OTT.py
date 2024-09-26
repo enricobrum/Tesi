@@ -6,22 +6,48 @@ import argparse
 import subprocess
 from datetime import datetime
 
+def get_ntp_timestamp(ntp_client):
+    server = 'ntp1.inrim.it'
+    response = ntp_client.request(server, version=3)
+    return response.tx_time  # Tempo in secondi
 
+def test_ntp(client_socket,message,ntp_client,host):
+        # Ottieni il timestamp prima di inviare il messaggio
+    client_send_timestamp = get_ntp_timestamp(ntp_client)
+    print(f"Timestamp invio client (secondi): {client_send_timestamp}")
+
+    # Invia il messaggio al server
+    message = "Richiesta dal client"
+    client_socket.sendto(message.encode(), host)
+
+    # Attende la risposta del server
+    data, _ = client_socket.recvfrom(1024)
+    server_timestamp = float(data.decode())  # Converte il timestamp dal server
+
+    # Ottieni il timestamp corrente del client per il calcolo dell'RTT
+    client_receive_timestamp = get_ntp_timestamp(ntp_client)
+    print(f"Timestamp ricezione client (secondi): {client_receive_timestamp}")
+
+    # Calcola l'RTT (Round Trip Time)
+    rtt = client_receive_timestamp - client_send_timestamp
+    print(f"RTT (Round Trip Time) in secondi: {rtt:.6f}")
+
+    # Calcola l'OTT (One Trip Time)
+    ott = (server_timestamp - client_send_timestamp) + (client_receive_timestamp - server_timestamp) / 2
+    print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
+
+    return 
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message,ntp_client):
 
     client_socket.sendall(message.encode('utf-8'))
     start_time = time.time()
-    start_time_ntp = ntp_client.request('ntp1.inrim.it')
+
     response = client_socket.recv(65536)
     end_time = time.time()
-    end_time_ntp = ntp_client.request('ntp1.inrim.it')
-    start_time_ntp = start_time_ntp.tx_time
-    end_time_ntp = end_time_ntp.tx_time
-    rtt_ntp = end_time_ntp - start_time_ntp
     rtt= end_time - start_time
-    return rtt,rtt_ntp,response
+    return rtt,response
 
 #Funzione per la connessione TCP con il server
 def connect_to_server(host, port):
@@ -223,7 +249,8 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
         print("4. Payload Variation Test")
         print("5. UDP Test")
         print(f"6. Traceroute verso {host}")
-        print("7. Esci")
+        print("7. Test sfruttando server ntp")
+        print("8. Esci")
 
         scelta = input("Inserisci il numero del test da eseguire: ")
 
@@ -265,6 +292,10 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
             print(f"\nEsecuzione del comando traceroute verso {host}")
             tracerout(host)
         elif scelta == '7':
+            print("Test echo con orologi da Server NTP.") 
+            message="Richiesta dal client"
+            test_ntp(client_socket,message,ntp_client,host) 
+        elif scelta == '8':
             file.close()
             print("Uscita dal programma.")
             break
