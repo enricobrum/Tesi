@@ -11,7 +11,7 @@ def get_ntp_timestamp(ntp_client):
     try: 
         response = ntp_client.request(server, version=4)
     except Exception as e:
-        response = 0
+        response = null
     return response  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
