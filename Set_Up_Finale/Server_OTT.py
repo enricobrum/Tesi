@@ -6,7 +6,8 @@ import ntplib
 def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
     response = ntp_client.request(server, version=3)
-    return response.tx_time  # Tempo in secondi
+    istante = response.tx_time-response.delay
+    return istante  # Tempo in secondi
 
 #Funzione per la gestione della connessione TCP
 def handle_tcp_connection(server_socket, client_address,ntp_client):
