@@ -10,19 +10,16 @@ def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
     try: 
         response = ntp_client.request(server, version=4)
-        istante = response.tx_time - (response.delay*2)
-        print(f"{response.delay}")
     except Exception as e:
         istante = 0
-    return istante  # Tempo in secondi
+    return response  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
     # Ottieni il timestamp prima di inviare il messaggio
     client_send_timestamp = get_ntp_timestamp(ntp_client)
     #print(f"Timestamp invio client (secondi): {client_send_timestamp}")
     # Invia il messaggio al server
-    message = "Richiesta dal client"
-    client_socket.sendall(message.encode())
+    client_socket.sendall("Richiesta dal client".encode())
     # Attende la risposta del server
     data, _ = client_socket.recvfrom(1024)
     # Ottieni il timestamp corrente del client per il calcolo dell'RTT
@@ -30,10 +27,10 @@ def test_ntp(client_socket,ntp_client,host,port):
     server_timestamp = float(data.decode())  # Converte il timestamp dal server 
     #print(f"Timestamp ricezione client (secondi): {client_receive_timestamp}")
     # Calcola l'RTT (Round Trip Time)
-    rtt = client_receive_timestamp - client_send_timestamp
+    rtt = client_receive_timestamp.tx_time - client_send_timestamp.tx_time
     print(f"RTT (Round Trip Time) in secondi: {rtt:.6f}")
     # Calcola l'OTT (One Trip Time)
-    ott = ((server_timestamp - client_send_timestamp) + (client_receive_timestamp - server_timestamp)) / 2
+    ott = ((server_timestamp - client_send_timestamp.tx_time) + (client_receive_timestamp.tx_time - server_timestamp)) / 2
     print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
     return rtt,ott
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
