@@ -118,7 +118,7 @@ def echo_test(client_socket, file, traffic,ntp_client):
     for _ in range(num_messages):
         file.write("echo"+','+str(traffic)+',')
         message = "Messaggio di test"
-        rtt,response=send_recv_rtt(client_socket,message,ntp_client)
+        rtt,response=send_recv_rtt(client_socket,message)
         file.write(str(rtt)+','+'0'+','+'0'+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         
