@@ -25,10 +25,6 @@ def handle_tcp_connection(server_socket, client_address,ntp_client):
             if data != 0:
                 # Ottieni il timestamp NTP attuale
                 server_timestamp = get_ntp_timestamp(ntp_client)
-
-                print(f"Ricevuto: {data.decode()}")
-                print(f"Timestamp server (secondi): {server_timestamp}")
-
                 # Risponde al client con il timestamp del server
                 server_socket.sendto(str(server_timestamp).encode(), client_address)
     except Exception as e:

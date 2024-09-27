@@ -10,7 +10,7 @@ def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
     response = ntp_client.request(server, version=3)
     istante = response.tx_time-response.delay
-    print(f"{delay}")
+    print(f"{response.delay}")
     return istante  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
