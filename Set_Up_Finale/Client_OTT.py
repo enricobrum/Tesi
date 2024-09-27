@@ -15,11 +15,11 @@ def get_ntp_timestamp(ntp_client):
 def test_ntp(client_socket,ntp_client,host,port):
         # Ottieni il timestamp prima di inviare il messaggio
     client_send_timestamp = get_ntp_timestamp(ntp_client)
-    print(f"Timestamp invio client (secondi): {client_send_timestamp}")
+    #print(f"Timestamp invio client (secondi): {client_send_timestamp}")
 
     # Invia il messaggio al server
     message = "Richiesta dal client"
-    client_socket.sendto(message.encode(), (host,port))
+    client_socket.sendall(message.encode())
 
     # Attende la risposta del server
     data, _ = client_socket.recvfrom(1024)
@@ -40,7 +40,7 @@ def test_ntp(client_socket,ntp_client,host,port):
     return rtt,ott
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
-def send_recv_rtt(client_socket,message,ntp_client):
+def send_recv_rtt(client_socket,message):
 
     client_socket.sendall(message.encode('utf-8'))
     start_time = time.time()
