@@ -9,7 +9,7 @@ from datetime import datetime
 def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
     try: 
-        response = ntp_client.request(server, version=3)
+        response = ntp_client.request(server, version=3, timeout=1)
     except Exception as e:
         print(f"Errore nella connessione TCP: {e}")
         response = 0
