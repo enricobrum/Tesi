@@ -20,7 +20,7 @@ def test_ntp(client_socket,ntp_client,host,port):
     client_send_timestamp = get_ntp_timestamp(ntp_client)
     #print(f"Timestamp invio client (secondi): {client_send_timestamp}")
     # Invia il messaggio al server
-    if client_receive_timestamp != 0:
+    if client_send_timestamp != 0:
         client_socket.sendall("Richiesta dal client".encode())
         # Attende la risposta del server
         data, _ = client_socket.recvfrom(1024)
