@@ -9,9 +9,9 @@ from datetime import datetime
 def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
     response = ntp_client.request(server, version=3)
-    istante = response.tx_time-response.delay
+    istante = response.tx_time - (response.delay*2)
     print(f"{response.delay}")
-    return response.tx_time  # Tempo in secondi
+    return istante  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
         # Ottieni il timestamp prima di inviare il messaggio
