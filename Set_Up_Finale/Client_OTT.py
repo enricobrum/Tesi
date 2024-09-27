@@ -27,10 +27,10 @@ def test_ntp(client_socket,ntp_client,host,port):
     server_timestamp = float(data.decode())  # Converte il timestamp dal server 
     #print(f"Timestamp ricezione client (secondi): {client_receive_timestamp}")
     # Calcola l'RTT (Round Trip Time)
-    rtt = client_receive_timestamp.tx_time - client_send_timestamp.tx_time
+    rtt = (client_receive_timestamp.tx_time - client_send_timestamp.tx_time) - client_send_timestamp.delay - client_receive_timestamp.delay
     print(f"RTT (Round Trip Time) in secondi: {rtt:.6f}")
     # Calcola l'OTT (One Trip Time)
-    ott = ((server_timestamp - client_send_timestamp.tx_time) + (client_receive_timestamp.tx_time - server_timestamp)) / 2
+    ott = ((server_timestamp - client_send_timestamp.tx_time) + (client_receive_timestamp.tx_time - server_timestamp)- client_send_timestamp.delay - client_receive_timestamp.delay) / 2 
     print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
     return rtt,ott
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
