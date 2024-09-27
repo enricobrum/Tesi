@@ -5,7 +5,7 @@ import ntplib
 
 def get_ntp_timestamp(ntp_client):
     server = 'ntp1.inrim.it'
-    response = ntp_client.request(server, version=3)
+    response = ntp_client.request(server, version=3, timeout=1)
     return response  # Tempo in secondi
 
 #Funzione per la gestione della connessione TCP
@@ -24,8 +24,11 @@ def handle_tcp_connection(server_socket, client_address,ntp_client):
             if data != 0:
                 # Ottieni il timestamp NTP attuale
                 server_timestamp = get_ntp_timestamp(ntp_client)
-                # Risponde al client con il timestamp del server
-                server_socket.sendto(str(server_timestamp.tx_time).encode(), client_address)
+                if server_timestamp != 0:
+                    # Risponde al client con il timestamp del server
+                    server_socket.sendto(str(server_timestamp.tx_time).encode(), client_address)
+                else:
+                    server_socket.sendto(str("0").encode(), client_address)
     except Exception as e:
         print(f"Errore nella connessione TCP: {e}")
     finally:
