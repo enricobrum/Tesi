@@ -11,7 +11,7 @@ def get_ntp_timestamp(ntp_client):
     response = ntp_client.request(server, version=3)
     istante = response.tx_time-response.delay
     print(f"{response.delay}")
-    return istante  # Tempo in secondi
+    return response.tx_time  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
         # Ottieni il timestamp prima di inviare il messaggio
