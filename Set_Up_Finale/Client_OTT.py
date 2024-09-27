@@ -35,6 +35,9 @@ def test_ntp(client_socket,ntp_client,host,port):
             # Calcola l'OTT (One Trip Time)
             ott = ((server_timestamp - client_send_timestamp.tx_time) + (client_receive_timestamp.tx_time - server_timestamp)- client_send_timestamp.delay - client_receive_timestamp.delay) / 2 
             print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
+        else:
+            rtt=0
+            ott=0
     else:
         rtt=0
         ott=0
