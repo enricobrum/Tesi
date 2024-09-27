@@ -11,7 +11,7 @@ def get_ntp_timestamp(ntp_client):
     try: 
         response = ntp_client.request(server, version=4)
     except Exception as e:
-        istante = 0
+        response = 0
     return response  # Tempo in secondi
 
 def test_ntp(client_socket,ntp_client,host,port):
@@ -294,7 +294,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
             for _ in range(ntest):
                 rtt,ott = test_ntp(client_socket,ntp_client,host,tcp_port) 
                 file.write("NTP"+','+str(traffic)+','+'0'+','+str(rtt)+','+str(ott)+'\n')
-                time.sleep(0.5)
+                #time.sleep(0.5)
         elif scelta == '8':
             file.close()
             print("Uscita dal programma.")
