@@ -11,7 +11,7 @@ def get_ntp_timestamp(ntp_client):
     response = ntp_client.request(server, version=3)
     return response.tx_time  # Tempo in secondi
 
-def test_ntp(client_socket,message,ntp_client,host,port):
+def test_ntp(client_socket,ntp_client,host,port):
         # Ottieni il timestamp prima di inviare il messaggio
     client_send_timestamp = get_ntp_timestamp(ntp_client)
     print(f"Timestamp invio client (secondi): {client_send_timestamp}")
@@ -36,7 +36,7 @@ def test_ntp(client_socket,message,ntp_client,host,port):
     ott = ((server_timestamp - client_send_timestamp) + (client_receive_timestamp - server_timestamp)) / 2
     print(f"OTT (One Trip Time) in secondi: {ott:.6f}")
 
-    return 
+    return rtt,ott
 #Funzione utilizzata per l'invio e l'attesa della risposta di messaggi TCP e
 #il calcolo del relativo Round Trip Time. 
 def send_recv_rtt(client_socket,message,ntp_client):
@@ -91,7 +91,7 @@ def ping_test_subprocess(host, file, traffic):
                         time_index = line.find("time=")
                         time_str = line[time_index:].split(" ")[0]
                         time=time_str.split("time=")[1]
-                        file.write(time+'\n')
+                        file.write(time+','+'0'+','+'0'+'\n')
                         print(f"Ping Test - {time_str}")
             else:
                 print("Ping Test - Nessuna risposta dal server")
@@ -118,7 +118,7 @@ def echo_test(client_socket, file, traffic,ntp_client):
         file.write("echo"+','+str(traffic)+',')
         message = "Messaggio di test"
         rtt,response=send_recv_rtt(client_socket,message,ntp_client)
-        file.write(str(rtt)+'\n')
+        file.write(str(rtt)+','+'0'+','+'0'+'\n')
         print(f"Echo Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
         
 #Funziozio di test che permette l'invio di messaggi TCP ad invervalli regolari, definiti
@@ -144,7 +144,7 @@ def latency_interval_test(client_socket, interval, file, traffic):
             file.write("Intervallo: "+str(inter)+' s,'+str(traffic)+',')
             message = "Latency Test"
             rtt,response=send_recv_rtt(client_socket,message)
-            file.write(str(rtt)+'\n')
+            file.write(str(rtt)+','+'0'+','+'0'+'\n')
             print(f"Latenza Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
             inter_float=float(inter)
             if inter_float-rtt >= 0:
@@ -173,7 +173,7 @@ def payload_variation_test(client_socket, file, traffic, payload):
             message = "X" * payload_size_int
             rtt,response=send_recv_rtt(client_socket,message)
             print(f"Payload Test - Dimensione: {payload_size} bytes, RTT: {rtt:.6f} s, Ricevuto: {len(response)} bytes")
-            file.write(str(rtt)+'\n')
+            file.write(str(rtt)+','+'0'+','+'0'+'\n')
             
 #Funzione di test che permette l'invio di messaggi UDP. Tale funzione avvia un timer esattamente 
 #prima dell'invio e lo arresta esattamente dopo aver ricevuto il messaggio. La differenza tra "end_time"
@@ -198,7 +198,7 @@ def udp_test(host, port, file, traffic):
         response, _ = udp_socket.recvfrom(65536)
         end_time = time.time()
         rtt=end_time-start_time
-        file.write(str(rtt)+'\n')
+        file.write(str(rtt)+','+'0'+','+'0'+'\n')
         print(f"UDP Test - RTT: {rtt:.6f} s, Ricevuto: {response.decode()}")
 
     udp_socket.close()
@@ -239,7 +239,7 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
     filecsv="istanti_temporali_"+data_stringa+".csv"
     file=open(filecsv,"a")
     if file.tell()==0:
-        file.write("Tipo Test,Traffico,RTT,RTT_ntp\n")
+        file.write("Tipo Test,Traffico,RTT,RTT_npt,OTT\n")
         print("File csv creato.")
     while True:
         print("\nSeleziona un test da eseguire:")
@@ -294,8 +294,10 @@ def run_test_cycle(host, tcp_port, udp_port, interval, traffic, payload):
         elif scelta == '7':
             print("Test echo con orologi da Server NTP.") 
             client_socket = connect_to_server(host, tcp_port)
-            message="Richiesta dal client"
-            test_ntp(client_socket,message,ntp_client,host,tcp_port) 
+            ntest = 1000
+            for _ in range(ntest):
+                rtt,ott = test_ntp(client_socket,ntp_client,host,tcp_port) 
+                file.write("NTP"+','+str(traffic)+','+'0'+','+str(rtt)+','+str(ott)+'\n')
         elif scelta == '8':
             file.close()
             print("Uscita dal programma.")
